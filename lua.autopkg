@@ -1,0 +1,52 @@
+configurations {
+	Toolset {
+		key : "PlatformToolset";
+		choices: { v140, v120, v110, v100 };
+	};
+};
+
+nuget {
+	nuspec {
+		id = lua;
+		version : 5.3.2;
+		title: Lua;
+		authors: {R. Ierusalimschy, L. H. de Figueiredo, W. Celes};
+		owners: {Sebastian Grottel};
+		licenseUrl: "https://www.lua.org/license.html";
+		projectUrl: "TODO";
+		iconUrl: "TODO";
+		requireLicenseAcceptance: false;
+		summary: "Lua is a powerful, fast, lightweight, embeddable scripting language.
+
+Lua combines simple procedural syntax with powerful data description constructs based on associative arrays and extensible semantics.
+Lua is dynamically typed, runs by interpreting bytecode for a register-based virtual machine, and has automatic memory management with incremental garbage collection, making it ideal for configuration, scripting, and rapid prototyping.";
+		releaseNotes: "";
+		copyright: Copyright 1994-2016;
+		tags: { Lua, native, CoApp };
+	};
+
+	files {
+		include: {
+			"lua\src\lua.h",
+			"lua\src\luaconf.h",
+			"lua\src\lualib.h",
+			"lua\src\lauxlib.h",
+			"lua\src\lua.hpp"
+		};
+		docs: {
+			"lua\doc\*"
+		};
+
+		("v140", "Win32,x64", "Debug,Release") => {
+			lib: ${1}\${0}\${2}\lua.lib;
+			symbols: ${1}\${0}\${2}\lua.pdb;
+			bin: ${1}\${0}\${2}\lua.dll;
+		};
+	};
+
+	targets {
+		Defines += HAS_LUA;
+		Defines += LUA_BUILD_AS_DLL;
+	};
+
+};
