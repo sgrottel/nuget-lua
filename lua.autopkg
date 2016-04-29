@@ -37,7 +37,7 @@ Lua is dynamically typed, runs by interpreting bytecode for a register-based vir
 			"lua\doc\*"
 		};
 
-		("v140", "Win32,x64", "Debug,Release") => {
+		("v140,v120,v110,v100", "Win32,x64", "Debug,Release") => {
 			[${0},${1},${2}] {
 				lib:     ${1}\${0}\${2}\lua.lib;
 				symbols: ${1}\${0}\${2}\lua.pdb;
