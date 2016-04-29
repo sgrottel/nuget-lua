@@ -35,5 +35,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="helloscript.lua" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
