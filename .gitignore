@@ -1,3 +1,9 @@
 /.vs
 /*.sdf
 /*.opendb
+/desktop.ini
+/x64
+/Win32
+/dll/Win32
+/dll/x64
+/*.db
