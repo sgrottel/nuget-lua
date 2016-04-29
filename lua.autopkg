@@ -13,10 +13,10 @@ nuget {
 		authors: {R. Ierusalimschy, L. H. de Figueiredo, W. Celes};
 		owners: {Sebastian Grottel};
 		licenseUrl: "https://www.lua.org/license.html";
-		projectUrl: "TODO";
-		iconUrl: "TODO";
+		projectUrl: "http://www.sgrottel.de/TODO";
+		iconUrl: "file:///D:/dev/_utilities.dev_/lua.nuget/lua/doc/logo.gif";
 		requireLicenseAcceptance: false;
-		summary: "Lua is a powerful, fast, lightweight, embeddable scripting language.
+		summary: @"Lua is a powerful, fast, lightweight, embeddable scripting language.
 
 Lua combines simple procedural syntax with powerful data description constructs based on associative arrays and extensible semantics.
 Lua is dynamically typed, runs by interpreting bytecode for a register-based virtual machine, and has automatic memory management with incremental garbage collection, making it ideal for configuration, scripting, and rapid prototyping.";
@@ -38,9 +38,11 @@ Lua is dynamically typed, runs by interpreting bytecode for a register-based vir
 		};
 
 		("v140", "Win32,x64", "Debug,Release") => {
-			lib: ${1}\${0}\${2}\lua.lib;
-			symbols: ${1}\${0}\${2}\lua.pdb;
-			bin: ${1}\${0}\${2}\lua.dll;
+			[${0},${1},${2}] {
+				lib:     ${1}\${0}\${2}\lua.lib;
+				symbols: ${1}\${0}\${2}\lua.pdb;
+				bin:     ${1}\${0}\${2}\lua.dll;
+			}
 		};
 	};
 

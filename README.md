@@ -26,6 +26,7 @@ Project Website: https://www.lua.org/
 * Download the newest Lua code and replace the content in the `lua` subdirectory.
 * Update the source file list in the Visual Studio Project based on the updated lua documentation.
 * Update `lua.autopkg` commands for packing `include` and `doc`umentation files based on the updated lua documentation.
+* Also update meta data like version number
 
 Most likely this is all there is.
 

@@ -7,3 +7,4 @@
 /dll/Win32
 /dll/x64
 /*.db
+/*.nupkg
