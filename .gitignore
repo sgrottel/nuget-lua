@@ -13,3 +13,5 @@
 /bin
 /compiler/x64
 /compiler/Win32
+/lib/Win32
+/lib/x64
