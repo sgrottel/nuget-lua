@@ -19,4 +19,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="info.rc">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>
