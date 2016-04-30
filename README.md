@@ -4,6 +4,7 @@ This repository contains all files and information to create a NuGet package fro
 
 For problems with the NuGet package contact SGrottel: 
 
+* https://bitbucket.org/sgrottel/lua_nuget/overview
 * http://www.sgrottel.de
 
 For problems with the library itself contact the authors:

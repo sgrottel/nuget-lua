@@ -13,8 +13,8 @@ nuget {
 		authors: {R. Ierusalimschy, L. H. de Figueiredo, W. Celes};
 		owners: {Sebastian Grottel};
 		licenseUrl: "https://www.lua.org/license.html";
-		projectUrl: "http://www.sgrottel.de/TODO";
-		iconUrl: "file:///D:/dev/_utilities.dev_/lua.nuget/lua/doc/logo.gif";
+		projectUrl: "https://bitbucket.org/sgrottel/lua_nuget/overview";
+		iconUrl: "https://bytebucket.org/sgrottel/lua_nuget/raw/373952da8fa8c772af789063fdb3d7144af03960/lua/doc/logo.gif";
 		requireLicenseAcceptance: false;
 		summary: @"Lua is a powerful, fast, lightweight, embeddable scripting language.
 
