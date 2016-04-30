@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{49F2A6F0-5EA7-42E3-9B92-237877055976}</ProjectGuid>
+    <ProjectGuid>{71DEB2C1-8559-40B2-8550-C57B26D4BED8}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>interpreter</RootNamespace>
+    <RootNamespace>compiler</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -71,26 +71,26 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <TargetName>luac</TargetName>
     <IntDir>$(ProjectDir)$(Platform)\$(PlatformToolset)\$(Configuration)\</IntDir>
-    <TargetName>lua</TargetName>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(PlatformToolset)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <TargetName>luac</TargetName>
     <IntDir>$(ProjectDir)$(Platform)\$(PlatformToolset)\$(Configuration)\</IntDir>
-    <TargetName>lua</TargetName>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(PlatformToolset)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>luac</TargetName>
     <IntDir>$(ProjectDir)$(Platform)\$(PlatformToolset)\$(Configuration)\</IntDir>
-    <TargetName>lua</TargetName>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(PlatformToolset)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>luac</TargetName>
     <IntDir>$(ProjectDir)$(Platform)\$(PlatformToolset)\$(Configuration)\</IntDir>
-    <TargetName>lua</TargetName>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(PlatformToolset)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -174,7 +174,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\lua\src\lua.c" />
+    <ClCompile Include="..\lua\src\luac.c" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="info.rc" />

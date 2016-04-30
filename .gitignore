@@ -10,3 +10,6 @@
 /*.nupkg
 /interpreter/x64
 /interpreter/Win32
+/bin
+/compiler/x64
+/compiler/Win32
