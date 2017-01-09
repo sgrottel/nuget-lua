@@ -6,6 +6,7 @@ For problems with the NuGet package contact SGrottel:
 
 * https://bitbucket.org/sgrottel_nuget/lua/overview
 * http://www.sgrottel.de
+* http://go.sgrottel.de/nuget/lua
 
 For problems with the library itself contact the authors:
 
