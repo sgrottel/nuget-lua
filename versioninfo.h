@@ -5,5 +5,5 @@
 
 #include "lua/src/lua.h"
 
-#define VER_VERSION             5,3,3,0
-#define VER_VERSION_STR         "5.3.3"
+#define VER_VERSION             5,3,4,0
+#define VER_VERSION_STR         "5.3.4"

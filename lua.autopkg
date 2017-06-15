@@ -1,14 +1,14 @@
 configurations {
 	Toolset {
 		key : "PlatformToolset";
-		choices: { v140, v120, v110, v100 };
+		choices: { v141, v140, v120, v110 };
 	};
 };
 
 nuget {
 	nuspec {
 		id = lua;
-		version : 5.3.3;
+		version : 5.3.4;
 		title: Lua;
 		authors: {R. Ierusalimschy, L. H. de Figueiredo, W. Celes};
 		owners: {Sebastian Grottel};
@@ -21,7 +21,7 @@ nuget {
 
 Lua is dynamically typed, runs by interpreting bytecode for a register-based virtual machine, and has automatic memory management with incremental garbage collection, making it ideal for configuration, scripting, and rapid prototyping.";
 		releaseNotes: "";
-		copyright: Copyright 1994-2016;
+		copyright: Copyright 1994-2017;
 		tags: { Lua, native, CoApp };
 	};
 
@@ -37,7 +37,7 @@ Lua is dynamically typed, runs by interpreting bytecode for a register-based vir
 			"lua\doc\*"
 		};
 
-		("v140,v120,v110,v100", "Win32,x64", "Debug,Release") => {
+		("v141,v140,v120,v110", "Win32,x64", "Debug,Release") => {
 			[${0},${1},${2}] {
 				lib:     ${1}\${0}\${2}\lua.lib;
 				symbols: ${1}\${0}\${2}\lua.pdb;
