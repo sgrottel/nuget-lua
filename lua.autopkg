@@ -19,7 +19,9 @@ nuget {
 		summary: @"Lua is a powerful, fast, lightweight, embeddable scripting language.";
 		description: @"Lua combines simple procedural syntax with powerful data description constructs based on associative arrays and extensible semantics.
 
-Lua is dynamically typed, runs by interpreting bytecode for a register-based virtual machine, and has automatic memory management with incremental garbage collection, making it ideal for configuration, scripting, and rapid prototyping.";
+Lua is dynamically typed, runs by interpreting bytecode for a register-based virtual machine, and has automatic memory management with incremental garbage collection, making it ideal for configuration, scripting, and rapid prototyping.
+
+This package supports MS Visual C++ 2012, 2013, 2015, 2017; Win32, x64; Debug, Release. Lua is built as dynamic library (Dll).";
 		releaseNotes: "";
 		copyright: Copyright 1994-2017;
 		tags: { Lua, native, CoApp };
