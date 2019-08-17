@@ -15,3 +15,4 @@
 /compiler/Win32
 /lib/Win32
 /lib/x64
+*.user
