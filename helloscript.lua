@@ -6,3 +6,10 @@ io.write("This is coming from lua.\n")
 function tellme()
 	io.write("This is coming from lua.tellme.\n")
 end
+
+function tellthat(word)
+	io.write("This is from lua.tellthat, telling ")
+	io.write(tostring(word))
+	io.write("\n")
+	andBackToC(word)
+end
