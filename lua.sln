@@ -1,14 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll", "dll\dll.vcxproj", "{6A75253A-B55D-4291-9B51-19D0F047BA10}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6AF5369F-11F9-47D6-B711-31ECF8CFB135}"
 	ProjectSection(SolutionItems) = preProject
+		collectArtifacts.ps1 = collectArtifacts.ps1
 		lua.autopkg = lua.autopkg
 		lua.ico = lua.ico
+		prepbuild.ps1 = prepbuild.ps1
 		README.md = README.md
 		versioninfo.h = versioninfo.h
 	EndProjectSection
@@ -68,5 +70,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A657EE74-ADF8-49C1-8831-41D4D36149D3}
 	EndGlobalSection
 EndGlobal

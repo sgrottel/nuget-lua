@@ -23,16 +23,48 @@ Lua is free open-source software, distributed under a [very liberal license](htt
 
 Project Website: https://www.lua.org/
 
-## Update Lua ##
+
+# Update Lua #
+
+[![Build status](https://ci.appveyor.com/api/projects/status/9qn16byb2a15kd5u/branch/master?svg=true)](https://ci.appveyor.com/project/s_grottel/lua/branch/master)
+
+## Update the source ##
 
 * Download the newest Lua code and replace the content in the `lua` subdirectory.
 * Update the source file list in the Visual Studio Project based on the updated lua documentation.
+
+## Deprecated ###
+
 * Update `lua.autopkg` commands for packing `include` and `doc`umentation files based on the updated lua documentation.
 * Also update meta data like version number
 
-Most likely this is all there is.
+## Solution ##
 
-## Building the NuGet Package ##
+Before you commit an update, do successfully build all projects in all configurations locally in a modern Visual Studio.
+
+
+# Building the NuGet Package #
+
+## Building binaries ##
+
+All binary variants for the nuget package will be built in the cloud using AppVeyor:
+
+https://ci.appveyor.com/project/s_grottel/lua
+
+The build is controlled by the the checked in file: `appveyor.yml`
+
+Make sure all binaries have been successfully built by AppVeyor before proceeding.
+
+## Collecting Artifacts ##
+
+Run `./collectArtifacts.ps1`
+
+This will download the binary artifacts for exactly this commit from AppVeyor, if available.
+Those will overwrite the content of your local ```bin``` directory.
+
+The `git` command line client must be available for the script, in order to identify the code commit hash.
+
+## Deprecated ##
 
 * Use the Visual Studio Solution to build the Dlls for all desired (and installed) platform toolsets
 * Edit `lua.autopkg` to reflect your built binaries
