@@ -26,7 +26,11 @@ Project Website: https://www.lua.org/
 
 # Update Lua #
 
+Build status master:
 [![Build status](https://ci.appveyor.com/api/projects/status/9qn16byb2a15kd5u/branch/master?svg=true)](https://ci.appveyor.com/project/s_grottel/lua/branch/master)
+
+Build status latest:
+[![Build status](https://ci.appveyor.com/api/projects/status/9qn16byb2a15kd5u?svg=true)](https://ci.appveyor.com/project/s_grottel/lua)
 
 ## Update the source ##
 

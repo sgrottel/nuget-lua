@@ -25,16 +25,19 @@ $builds = $history.builds | Where-Object -Property 'status' -eq -value 'success'
 $buildversion = $builds[0].version
 # request build details
 $build = Invoke-RestMethod -Uri "$appVeyorApi/projects/s_grottel/lua/build/$buildversion" -Headers $headers -Method Get
-$jobs = $build.build.jobs | Where-Object -Property 'status' -eq -value 'success' | Select-Object -ExpandProperty 'jobId'
+$jobs = $build.build.jobs | Where-Object -Property 'status' -eq -value 'success'
 $artCnt = 0
-$jobs | foreach { 
-	$jobId = $_
+$jobs | foreach {
+	Write-Host "Downloading: $($_.name)"
+	Write-Host "[$($_.jobId)]"
+	$jobId = $_.jobId
 	$artifacts = Invoke-RestMethod -Method Get -Uri "$appVeyorApi/buildjobs/$jobId/artifacts" -Headers $headers
 	$artifacts | Select-Object -ExpandProperty 'fileName' | foreach {
+		Write-Host "`t$_"
 		$localPath = "$PSScriptRoot\$_"
 		$localDir = [System.IO.Path]::GetDirectoryName($localPath)
 		if (!(test-path $localDir)) { New-Item -ItemType Directory -Force -Path $localDir | Out-Null }
-		Invoke-RestMethod -Method Get -Uri "$appVeyorApi/buildjobs/$jobId/artifacts/$artifactFileName" `
+		Invoke-RestMethod -Method Get -Uri "$appVeyorApi/buildjobs/$jobId/artifacts/$_" `
 			-OutFile $localPath -Headers @{ "Authorization" = "Bearer $appVeyorApiToken" }
 		$artCnt++
 	}
