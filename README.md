@@ -36,11 +36,7 @@ Build status latest:
 
 * Download the newest Lua code and replace the content in the `lua` subdirectory.
 * Update the source file list in the Visual Studio Project based on the updated lua documentation.
-
-## Deprecated ###
-
-* Update `lua.autopkg` commands for packing `include` and `doc`umentation files based on the updated lua documentation.
-* Also update meta data like version number
+* If files were added or removed, especially public header files, you might need to adjust `lua.nuspec` and `lua.targets`.
 
 ## Solution ##
 
@@ -67,6 +63,15 @@ This will download the binary artifacts for exactly this commit from AppVeyor, i
 Those will overwrite the content of your local ```bin``` directory.
 
 The `git` command line client must be available for the script, in order to identify the code commit hash.
+
+## Build nuget ##
+
+Run `./makeNuget.ps1 <build-number>`
+
+You need to specify the `<build-number>`. This will be used as fourth number in the version number.
+
+
+
 
 ## Deprecated ##
 

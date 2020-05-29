@@ -106,6 +106,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(TargetName)_dll.pdb</ProgramDatabaseFile>
     </Link>
+    <PreBuildEvent>
+      <Command>powershell.exe -ExecutionPolicy unrestricted -File "$(SolutionDir)numericVersionNumber.ps1"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -120,6 +123,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(TargetName)_dll.pdb</ProgramDatabaseFile>
     </Link>
+    <PreBuildEvent>
+      <Command>powershell.exe -ExecutionPolicy unrestricted -File "$(SolutionDir)numericVersionNumber.ps1"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -138,6 +144,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(TargetName)_dll.pdb</ProgramDatabaseFile>
     </Link>
+    <PreBuildEvent>
+      <Command>powershell.exe -ExecutionPolicy unrestricted -File "$(SolutionDir)numericVersionNumber.ps1"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -156,6 +165,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(TargetName)_dll.pdb</ProgramDatabaseFile>
     </Link>
+    <PreBuildEvent>
+      <Command>powershell.exe -ExecutionPolicy unrestricted -File "$(SolutionDir)numericVersionNumber.ps1"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\lua\src\lapi.c" />
@@ -198,6 +210,7 @@
     <ClInclude Include="..\lua\src\lua.hpp" />
     <ClInclude Include="..\lua\src\luaconf.h" />
     <ClInclude Include="..\lua\src\lualib.h" />
+    <ClInclude Include="..\versioninfo.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="info.rc">

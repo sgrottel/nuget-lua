@@ -16,3 +16,4 @@
 /lib/Win32
 /lib/x64
 *.user
+/versioninfo.h

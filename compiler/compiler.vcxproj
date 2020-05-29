@@ -108,6 +108,9 @@
       <AdditionalDependencies>lua_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent />
+    <PreBuildEvent>
+      <Command>powershell.exe -ExecutionPolicy unrestricted -File "$(SolutionDir)numericVersionNumber.ps1"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -124,6 +127,9 @@
       <AdditionalDependencies>lua_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent />
+    <PreBuildEvent>
+      <Command>powershell.exe -ExecutionPolicy unrestricted -File "$(SolutionDir)numericVersionNumber.ps1"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -144,6 +150,9 @@
       <AdditionalDependencies>lua_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent />
+    <PreBuildEvent>
+      <Command>powershell.exe -ExecutionPolicy unrestricted -File "$(SolutionDir)numericVersionNumber.ps1"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -164,6 +173,9 @@
       <AdditionalDependencies>lua_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent />
+    <PreBuildEvent>
+      <Command>powershell.exe -ExecutionPolicy unrestricted -File "$(SolutionDir)numericVersionNumber.ps1"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\lua\src\luac.c" />
@@ -175,6 +187,9 @@
     <ProjectReference Include="..\lib\lib.vcxproj">
       <Project>{243f0555-fd67-4ce1-b9e4-d546f3fe9269}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\versioninfo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
