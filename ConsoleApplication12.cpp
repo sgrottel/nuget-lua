@@ -32,7 +32,12 @@ int main(void) {
 	if (luaL_loadfile(L, "helloscript.lua"))    /* Load but don't run the Lua script */
 		bail(L, "luaL_loadfile() failed");      /* Error out if file can't be read */
 
-	lua_register(L, "andBackToC", &ccallback);  /* Register a c callback*/
+	lua_newtable(L); // push table on stack
+	lua_pushcfunction(L, &ccallback); // push function on stack
+	lua_setfield(L, -2, "call"); // sets table["call"] = ccallback, and pops functions from stack
+	lua_setglobal(L, "chost"); // sets global chost = table, and pops table from stack
+
+	//lua_register(L, "andBackToC", &ccallback);  /* Register a c callback*/
 
 	printf("In C, calling Lua\n");
 

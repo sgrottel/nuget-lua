@@ -11,5 +11,5 @@ function tellthat(word)
 	io.write("This is from lua.tellthat, telling ")
 	io.write(tostring(word))
 	io.write("\n")
-	andBackToC(word)
+	chost.call(word)
 end
