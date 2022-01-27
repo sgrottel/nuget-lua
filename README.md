@@ -2,15 +2,16 @@
 
 This repository contains all files and information to create a NuGet package from the source code of Lua.
 
-For problems with the NuGet package contact SGrottel: 
-
-* https://bitbucket.org/sgrottel_nuget/lua/overview
-* http://www.sgrottel.de
-* http://go.sgrottel.de/nuget/lua
-
 For problems with the library itself contact the authors:
 
 * https://www.lua.org/
+
+For problems with the NuGet package contact SGrottel:
+
+* https://go.grottel.net/nuget-project/lua  (takes you here)
+* https://go.grottel.net/nuget/lua
+* https://www.sgrottel.de
+
 
 ## Lua ##
 
@@ -70,19 +71,3 @@ Run `./makeNuget.ps1 <build-number>`
 
 You need to specify the `<build-number>`. This will be used as fourth number in the version number.
 
-
-
-
-## Deprecated ##
-
-* Use the Visual Studio Solution to build the Dlls for all desired (and installed) platform toolsets
-* Edit `lua.autopkg` to reflect your built binaries
-
-Install CoApp Tools: http://coapp.org/
-
-* http://coapp.org/tutorials/installation.html
-* http://coapp.org/tutorials/building-a-package.html
-
-Navigate your Powershell to the repository.
-
-Run: `Write-NuGetPackage .\lua.autopkg`
