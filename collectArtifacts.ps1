@@ -19,12 +19,12 @@ $headers = @{}
 $headers['Authorization'] = "Bearer $appVeyorApiToken"
 $headers['Content-type'] = 'application/json'
 # Collect last 100 builds
-$history = Invoke-RestMethod -Uri "$appVeyorApi/projects/s_grottel/lua/history?recordsNumber=100" -Headers $headers -Method Get
+$history = Invoke-RestMethod -Uri "$appVeyorApi/projects/s_grottel/nuget-lua/history?recordsNumber=100" -Headers $headers -Method Get
 # Find build for this commit
 $builds = $history.builds | Where-Object -Property 'status' -eq -value 'success' | Where-Object -Property 'commitId' -eq -Value $commitID
 $buildversion = $builds[0].version
 # request build details
-$build = Invoke-RestMethod -Uri "$appVeyorApi/projects/s_grottel/lua/build/$buildversion" -Headers $headers -Method Get
+$build = Invoke-RestMethod -Uri "$appVeyorApi/projects/s_grottel/nuget-lua/build/$buildversion" -Headers $headers -Method Get
 $jobs = $build.build.jobs | Where-Object -Property 'status' -eq -value 'success'
 $artCnt = 0
 $jobs | foreach {
