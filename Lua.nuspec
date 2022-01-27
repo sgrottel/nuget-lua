@@ -9,7 +9,7 @@
 		<authors>R. Ierusalimschy, L. H. de Figueiredo, W. Celes</authors>
 		<owners>Sebastian Grottel</owners>
 		<license type="expression">MIT</license>
-		<projectUrl>https://bitbucket.org/sgrottel_nuget/lua/overview</projectUrl>
+		<projectUrl>https://go.grottel.net/nuget-project/lua</projectUrl>
 		<icon>images\logo.png</icon>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>
