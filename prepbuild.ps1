@@ -18,6 +18,10 @@ if ($img -Match 'visual studio') {
 		$toolset = 'v142'
 		$winTarget = '10.0'
 	}
+	if ($img -Match '2022') {
+		$toolset = 'v143'
+		$winTarget = '10.0'
+	}
 }
 #$toolset
 
