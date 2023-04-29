@@ -71,7 +71,7 @@ jobs:
       if: matrix.toolset == 'v141'
       run: |
         curl -L https://aka.ms/vs/16/release/vs_installer.exe -o vs_installer.exe
-        vs_installer.exe modify --add Microsoft.VisualStudio.Component.VC.v141.x86.x64 --passive
+        .\vs_installer.exe modify --add Microsoft.VisualStudio.Component.VC.v141.x86.x64 --passive
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.1
