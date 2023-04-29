@@ -19,7 +19,8 @@ jobs:
       matrix:
         configuration: [Debug, Release]
         platform: [x64, x86]
-        toolset: [v120, v140, v141, v142, v143]
+        toolset: [v141, v143]
+        # toolset: [v120, v140, v141, v142, v143]
     runs-on: windows-latest
     steps:
 
@@ -51,17 +52,26 @@ jobs:
         Write-Output "BUILD_WINTARGET=$winTarget" >> $env:GITHUB_ENV
         Write-Output "VSVER=$vsver" >> $env:GITHUB_ENV
 
-    - name: install VS 2013 tools
-      run: choco install microsoft-build-tools --version=12.0.21005.20140416
-      if: matrix.toolset == 'v120'
+    # - name: install VS 2013 tools
+    #   run: choco install microsoft-build-tools --version=12.0.21005.20140416
+    #   if: matrix.toolset == 'v120'
 
-    - name: install VS 2015 tools
-      run: choco install microsoft-build-tools --version=14.0.25420.1
-      if: matrix.toolset == 'v140'
+    # - name: install VS 2015 tools
+    #   run: 
+    #   if: matrix.toolset == 'v140'
 
-    - name: install VS 2017 tools
-      run: choco install microsoft-build-tools --version=15.0.26320.2
+    # - name: install VS 2017 tools
+    #   run: choco install microsoft-build-tools --version=15.0.26320.2
+    #   if: matrix.toolset == 'v141'
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Install VS 2017 tools
       if: matrix.toolset == 'v141'
+      run: |
+        curl -L https://aka.ms/vs/16/release/vs_installer.exe -o vs_installer.exe
+        vs_installer.exe modify --add Microsoft.VisualStudio.Component.VC.v141.x86.x64 --passive
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.1
