@@ -28,33 +28,47 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.1
 
-    - name: Setup VSTest Path
-      uses: darenm/Setup-VSTest@v1.2
+    - name: Prepare Environment
+      shell: pwsh
+      run: |
+        # if ('${{matrix.toolset}}' -Match 'v120') {
+          $winTarget = '10.0'
+        # }
+        # if ('${{matrix.toolset}}' -Match 'v140') {
+        #   $winTarget = '10.0'
+        # }
+        # if ('${{matrix.toolset}}' -Match 'v141') {
+        #   $winTarget = '10.0'
+        # }
+        # if ('${{matrix.toolset}}' -Match 'v142') {
+        #   $winTarget = '10.0'
+        # }
+        # if ('${{matrix.toolset}}' -Match 'v143') {
+        #   $winTarget = '10.0'
+        # }      
+        Write-Output "BUILD_WINTARGET=$winTarget" >> $env:GITHUB_ENV
+
+    - name: install VS 2013 tools
+      run: choco install microsoft-build-tools-2013
+      if: matrix.toolset == 'v120'
+
+    - name: install VS 2015 tools
+      run: choco install microsoft-build-tools-2015
+      if: matrix.toolset == 'v140'
+
+    - name: Choco
+      run: choco install microsoft-build-tools-2017
+      if: matrix.toolset == 'v141'
 
     - name: Patch VSProj toolset
       shell: pwsh
       run: |
-        if ('${{matrix.toolset}}' -Match 'v120') {
-          $winTarget = '10.0'
-        }
-        if ('${{matrix.toolset}}' -Match 'v140') {
-          $winTarget = ''
-        }
-        if ('${{matrix.toolset}}' -Match 'v141') {
-          $winTarget = ''
-        }
-        if ('${{matrix.toolset}}' -Match 'v142') {
-          $winTarget = '10.0'
-        }
-        if ('${{matrix.toolset}}' -Match 'v143') {
-          $winTarget = '10.0'
-        }      
         gci -r '*.vcxproj' | foreach {
           $proj = [xml](Get-Content $_)
           [System.Xml.XmlNamespaceManager]$ns = $proj.NameTable
           $ns.AddNamespace("Any", $proj.DocumentElement.NamespaceURI)
           $proj.SelectNodes("//Any:PlatformToolset", $ns) | foreach { $_.InnerText = '${{matrix.toolset}}' }
-          $proj.SelectNodes("//Any:WindowsTargetPlatformVersion", $ns) | foreach { $_.InnerText = $winTarget }
+          $proj.SelectNodes("//Any:WindowsTargetPlatformVersion", $ns) | foreach { $_.InnerText = '${{env.BUILD_WINTARGET}}' }
           $proj.save($_)
         }
 
