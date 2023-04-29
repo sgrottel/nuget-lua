@@ -73,12 +73,12 @@ jobs:
       if: matrix.toolset == 'v141'
       shell: pwsh
       run: |
-        & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" modify --add Microsoft.VisualStudio.Component.VC.v141.x86.x64 --installPath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise" --quiet --includeRecommended --norestart --noUpdateInstaller
+        winget install --id Microsoft.VisualStudio.2022.Enterprise --override "--add Microsoft.VisualStudio.Workload.NativeDesktop;Microsoft.VisualStudio.Component.VC.v141.x86.x64;includeRecommended --focusedUi --wait"
 
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
-      with:
-        vs-version: ${{env.VSVER}}
+    # - name: Add MSBuild to PATH
+    #   uses: microsoft/setup-msbuild@v1.1
+    #   with:
+    #     vs-version: ${{env.VSVER}}
 
     - name: Patch VSProj toolset
       shell: pwsh
