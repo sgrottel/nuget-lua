@@ -1,0 +1,150 @@
+# Nuget Lua
+name: MSBuild
+
+on:
+  push:
+    # branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  # Path to the solution file relative to the root of the project.
+  SOLUTION_FILE_PATH: .
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration: [Debug, Release]
+        platform: [x64, x86]
+        toolset: [v120, v140, v141, v142, v143]
+    runs-on: windows-latest
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Setup VSTest Path
+      uses: darenm/Setup-VSTest@v1.2
+
+    - name: Patch VSProj toolset
+      shell: pwsh
+      run: |
+        if (${{matrix.toolset}} -Match 'v120') {
+          $winTarget = '10.0'
+        }
+        if (${{matrix.toolset}} -Match 'v140') {
+          $winTarget = ''
+        }
+        if (${{matrix.toolset}} -Match 'v141') {
+          $winTarget = ''
+        }
+        if (${{matrix.toolset}} -Match 'v142') {
+          $winTarget = '10.0'
+        }
+        if (${{matrix.toolset}} -Match 'v143') {
+          $winTarget = '10.0'
+        }      
+        gci -r '*.vcxproj' | foreach {
+          $proj = [xml](Get-Content $_)
+          [System.Xml.XmlNamespaceManager]$ns = $proj.NameTable
+          $ns.AddNamespace("Any", $proj.DocumentElement.NamespaceURI)
+          $proj.SelectNodes("//Any:PlatformToolset", $ns) | foreach { $_.InnerText = ${{matrix.toolset}} }
+          $proj.SelectNodes("//Any:WindowsTargetPlatformVersion", $ns) | foreach { $_.InnerText = $winTarget }
+          $proj.save($_)
+        }
+
+    # - name: Prepare Environment
+    #   shell: pwsh
+    #   run: |
+    #     $artifactPath = "bin/${{matrix.platform}}/${{matrix.configuration}}"
+    #     if ("${{matrix.platform}}" -eq "x86") {
+    #       $artifactPath = "bin/Win32/${{matrix.configuration}}"
+    #     }
+    #     Write-Host "Artifact Path: $artifactPath"
+    #     Write-Output "ARTIFACT_PATH=$artifactPath" >> $env:GITHUB_ENV
+
+    # - name: Inject build version number
+    #   shell: pwsh
+    #   run: |
+    #     $vf = get-content "Version.h" -Raw
+
+    #     $vf -match '\n#define\s+OPEN_HERE_VER_MAJOR\s+(\d+)\s*\n' | Out-Null
+    #     $major = $Matches[1]
+    #     $vf -match '\n#define\s+OPEN_HERE_VER_MINOR\s+(\d+)\s*\n' | Out-Null
+    #     $minor = $Matches[1]
+    #     $vf -match '\n#define\s+OPEN_HERE_VER_PATCH\s+(\d+)\s*\n' | Out-Null
+    #     $patch = $Matches[1]
+
+    #     $nvf = $vf -replace '(\n#define\s+OPEN_HERE_VER_BUILD\s+)(\d+)(\s*\n)',"`${1}$env:GITHUB_RUN_NUMBER`$3"
+
+    #     set-content "Version.h" $nvf -force -nonewline
+
+    #     $version = New-Object System.Version @( $major, $minor, $patch, $env:GITHUB_RUN_NUMBER )
+    #     Write-Host "Version number: $version"
+
+    #     Write-Output "FULL_VERSION_NUMBER=$version" >> $env:GITHUB_ENV
+
+    # - name: Update Settings App version information
+    #   working-directory: ${{env.GITHUB_WORKSPACE}}
+    #   shell: pwsh
+    #   run: SettingsApp\updateVersionInfo.ps1
+
+    # - name: Restore NuGet packages
+    #   working-directory: ${{env.GITHUB_WORKSPACE}}
+    #   run: nuget restore ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      # Add additional options to the MSBuild command line here (like platform or verbosity level).
+      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+      run: msbuild /m /p:Configuration=${{matrix.configuration}} /p:Platform=${{matrix.platform}} ${{env.SOLUTION_FILE_PATH}}
+
+    # - name: Test ToolboxLib
+    #   working-directory: ${{env.GITHUB_WORKSPACE}}
+    #   run: vstest.console.exe ToolboxLibUnitTest/${{env.ARTIFACT_PATH}}/ToolboxLibUnitTest.dll
+
+    # - name: Test Console App
+    #   shell: pwsh
+    #   run: ConsoleApp\runtest.ps1 "${{env.ARTIFACT_PATH}}" "${{github.workspace}}"
+
+    # - name: Finalize Release Package
+    #   shell: pwsh
+    #   run: |
+    #     mkdir bin/OpenHere
+    #     mkdir bin/OpenHere/OpenHereSettings
+    #     copy "${{env.ARTIFACT_PATH}}/*" "bin/OpenHere/OpenHereSettings" -Exclude "*.pdb"
+    #     move bin/OpenHere/OpenHereSettings/OpenHere.exe bin/OpenHere
+    #     move bin/OpenHere/OpenHereSettings/OpenHereCon.exe bin/OpenHere
+    #     copy LICENSE bin/OpenHere
+    #     $lines = [System.Collections.ArrayList](get-content README.md)
+    #     $lines.Insert(2, "Version ${{env.FULL_VERSION_NUMBER}}");
+    #     $newLines = @()
+    #     $inc = $true
+    #     $lines | foreach { if ($_ -match "\s*<!---\s+START\s+STRIP\s+-->\s*") { $inc = $false; } elseif ($_ -match "\s*<!---\s+END\s+STRIP\s+-->\s*") { $inc = $true } elseif ($inc) { $newLines += $_ } }
+    #     set-content bin\OpenHere\README.md $newLines
+    #     @{
+    #     "_type" = "ComponentSourceManifest";
+    #     "_version" = 1;
+    #     "components" = @( @{
+    #         "name" = "Open Here";
+    #         "source" = @( @{
+    #             "type" = "git";
+    #             "url" = "https://github.com/sgrottel/open-here.git";
+    #             "hash" = "${{github.sha}}";
+    #             "version" = "${{env.FULL_VERSION_NUMBER}}";
+    #             "subset" = "github releases"
+    #         } )
+    #     } ) } | ConvertTo-Json -Depth 10 > "bin/OpenHere/ComponentSource.json"
+
+    # - name: Upload Artifacts
+    #   if: ${{ matrix.configuration == 'Release' && matrix.platform == 'x64' }}
+    #   uses: actions/upload-artifact@v3.1.0
+    #   with:
+    #     name: open-here-${{env.FULL_VERSION_NUMBER}}-${{matrix.platform}}-${{matrix.configuration}}
+    #     path: bin/OpenHere
+    #     if-no-files-found: error
