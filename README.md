@@ -1,6 +1,10 @@
 # Lua Nuget #
 
-This repository contains all files and information to create a NuGet package from the source code of Lua.
+This repository contains all files and information to create a [NuGet package](https://www.nuget.org/packages/lua/) from the source code of [Lua](https://www.lua.org/).
+
+
+![MIT LICENSE](https://img.shields.io/github/license/sgrottel/nuget-lua)
+![Nuget](https://img.shields.io/nuget/v/lua)
 
 For problems with the library itself contact the authors:
 
@@ -8,12 +12,13 @@ For problems with the library itself contact the authors:
 
 For problems with the NuGet package contact SGrottel:
 
+* https://www.nuget.org/packages/lua/
 * https://go.grottel.net/nuget-project/lua  (takes you here)
 * https://go.grottel.net/nuget/lua
 * https://www.sgrottel.de
 
 
-## Lua ##
+# Lua
 
 [Lua](https://www.lua.org/) is a powerful, fast, lightweight, embeddable scripting language.
 
@@ -24,7 +29,7 @@ Lua is free open-source software, distributed under a [very liberal license](htt
 
 Project Website: https://www.lua.org/
 
-
+<!--
 # Update Lua #
 
 Build status main:
@@ -32,8 +37,9 @@ Build status main:
 
 Build status latest:
 [![Build status](https://ci.appveyor.com/api/projects/status/g03fhu8osf7ecwey?svg=true)](https://ci.appveyor.com/project/s_grottel/nuget-lua)
+-->
 
-
+<!--
 ## Update the source ##
 
 * Download the newest Lua code and replace the content in the `lua` subdirectory.
@@ -47,6 +53,10 @@ Before you commit an update, do successfully build all projects in all configura
 
 # Building the NuGet Package #
 
+TODO: Migrating to Github Actions
+-->
+
+<!--
 ## Building binaries ##
 
 All binary variants for the nuget package will be built in the cloud using AppVeyor:
@@ -71,4 +81,9 @@ The `git` command line client must be available for the script, in order to iden
 Run `./makeNuget.ps1 <build-number>`
 
 You need to specify the `<build-number>`. This will be used as fourth number in the version number.
+-->
 
+# License
+Lua is freely available under the terms of the [MIT open source license](https://www.lua.org/license.html).
+
+The additional code to produce the Lua NuGet package is freely available under the terms of the [MIT open source license](./LICENSE).
