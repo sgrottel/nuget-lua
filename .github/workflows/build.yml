@@ -25,40 +25,48 @@ jobs:
 
     - uses: actions/checkout@v3
 
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
-
     - name: Prepare Environment
       shell: pwsh
       run: |
-        # if ('${{matrix.toolset}}' -Match 'v120') {
+        if ('${{matrix.toolset}}' -Match 'v120') {
           $winTarget = '10.0'
-        # }
-        # if ('${{matrix.toolset}}' -Match 'v140') {
-        #   $winTarget = '10.0'
-        # }
-        # if ('${{matrix.toolset}}' -Match 'v141') {
-        #   $winTarget = '10.0'
-        # }
-        # if ('${{matrix.toolset}}' -Match 'v142') {
-        #   $winTarget = '10.0'
-        # }
-        # if ('${{matrix.toolset}}' -Match 'v143') {
-        #   $winTarget = '10.0'
-        # }      
+          $vsver = '[12, 14)'
+        }
+        if ('${{matrix.toolset}}' -Match 'v140') {
+          $winTarget = '10.0'
+          $vsver = '[14, 15)'
+        }
+        if ('${{matrix.toolset}}' -Match 'v141') {
+          $winTarget = '10.0'
+          $vsver = '[15, 16)'
+        }
+        if ('${{matrix.toolset}}' -Match 'v142') {
+          $winTarget = '10.0'
+          $vsver = '[16, 17)'
+        }
+        if ('${{matrix.toolset}}' -Match 'v143') {
+          $winTarget = '10.0'
+          $vsver = '[17, )'
+        }      
         Write-Output "BUILD_WINTARGET=$winTarget" >> $env:GITHUB_ENV
+        Write-Output "VSVER=$vsver" >> $env:GITHUB_ENV
 
     - name: install VS 2013 tools
-      run: choco install microsoft-build-tools-2013
+      run: choco install microsoft-build-tools --version=12.0.21005.20140416
       if: matrix.toolset == 'v120'
 
     - name: install VS 2015 tools
-      run: choco install microsoft-build-tools-2015
+      run: choco install microsoft-build-tools --version=14.0.25420.1
       if: matrix.toolset == 'v140'
 
-    - name: Choco
-      run: choco install microsoft-build-tools-2017
+    - name: install VS 2017 tools
+      run: choco install microsoft-build-tools --version=15.0.26320.2
       if: matrix.toolset == 'v141'
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+      with:
+        vs-version: ${{env.VSVER}}
 
     - name: Patch VSProj toolset
       shell: pwsh
