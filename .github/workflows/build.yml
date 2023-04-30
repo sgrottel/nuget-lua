@@ -21,38 +21,39 @@ jobs:
         platform: [x64]
         # configuration: [Debug, Release]
         # platform: [x64, x86]
-        toolset: [v140, v141, v142, v143]
+        toolset: [v120]
+        # toolset: [v140, v141, v142, v143]
         # toolset: [v120, v140, v141, v142, v143]
     runs-on: windows-latest
     steps:
 
     - uses: actions/checkout@v3
 
-    - name: Prepare Environment
-      shell: pwsh
-      run: |
-        if ('${{matrix.toolset}}' -Match 'v120') {
-          $winTarget = '10.0'
-          $vsver = '[12, 14)'
-        }
-        if ('${{matrix.toolset}}' -Match 'v140') {
-          $winTarget = '10.0.19041.0'
-          $vsver = '[14, 15)'
-        }
-        if ('${{matrix.toolset}}' -Match 'v141') {
-          $winTarget = '10.0.19041.0'
-          $vsver = '[15, 16)'
-        }
-        if ('${{matrix.toolset}}' -Match 'v142') {
-          $winTarget = '10.0'
-          $vsver = '[16, 17)'
-        }
-        if ('${{matrix.toolset}}' -Match 'v143') {
-          $winTarget = '10.0'
-          $vsver = '[17, )'
-        }      
-        Write-Output "BUILD_WINTARGET=$winTarget" >> $env:GITHUB_ENV
-        Write-Output "VSVER=$vsver" >> $env:GITHUB_ENV
+    # - name: Prepare Environment
+    #   shell: pwsh
+    #   run: |
+    #     if ('${{matrix.toolset}}' -Match 'v120') {
+    #       $winTarget = '10.0'
+    #       $vsver = '[12, 14)'
+    #     }
+    #     if ('${{matrix.toolset}}' -Match 'v140') {
+    #       $winTarget = '10.0.19041.0'
+    #       $vsver = '[14, 15)'
+    #     }
+    #     if ('${{matrix.toolset}}' -Match 'v141') {
+    #       $winTarget = '10.0.19041.0'
+    #       $vsver = '[15, 16)'
+    #     }
+    #     if ('${{matrix.toolset}}' -Match 'v142') {
+    #       $winTarget = '10.0'
+    #       $vsver = '[16, 17)'
+    #     }
+    #     if ('${{matrix.toolset}}' -Match 'v143') {
+    #       $winTarget = '10.0'
+    #       $vsver = '[17, )'
+    #     }      
+    #     Write-Output "BUILD_WINTARGET=$winTarget" >> $env:GITHUB_ENV
+    #     Write-Output "VSVER=$vsver" >> $env:GITHUB_ENV
 
     # - name: install VS 2013 tools
     #   run: choco install microsoft-build-tools --version=12.0.21005.20140416
@@ -66,27 +67,33 @@ jobs:
     #   run: choco install microsoft-build-tools --version=15.0.26320.2
     #   if: matrix.toolset == 'v141'
 
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.1
+    # - name: Add MSBuild to PATH
+    #   uses: microsoft/setup-msbuild@v1.1
 
-    - name: Install VS 2015 tools
-      if: matrix.toolset == 'v140'
+    - name: Install VS 2013 tools
+      if: matrix.toolset == 'v120'
       shell: pwsh
       run: |
-        & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" modify --add Microsoft.VisualStudio.Component.VC.v140 --installPath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise" --quiet --includeRecommended --norestart --noUpdateInstaller
-        Sleep 30
+        choco install microsoft-build-tools --version=12.0.21005.1
 
-    - name: Install VS 2017 tools
-      if: matrix.toolset == 'v141'
-      shell: pwsh
-      run: |
-        & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" modify --add Microsoft.VisualStudio.Component.VC.v141.x86.x64 --installPath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise" --quiet --includeRecommended --norestart --noUpdateInstaller
+    # - name: Install VS 2015 tools
+    #   if: matrix.toolset == 'v140'
+    #   shell: pwsh
+    #   run: |
+    #     & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" modify --add Microsoft.VisualStudio.Component.VC.v140 --installPath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise" --quiet --includeRecommended --norestart --noUpdateInstaller
+    #     Sleep 30
 
-    - name: Install VS 2019 tools
-      if: matrix.toolset == 'v142'
-      shell: pwsh
-      run: |
-        & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" modify --add Microsoft.VisualStudio.Component.VC.v142.x86.x64 --installPath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise" --quiet --includeRecommended --norestart --noUpdateInstaller
+    # - name: Install VS 2017 tools
+    #   if: matrix.toolset == 'v141'
+    #   shell: pwsh
+    #   run: |
+    #     & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" modify --add Microsoft.VisualStudio.Component.VC.v141.x86.x64 --installPath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise" --quiet --includeRecommended --norestart --noUpdateInstaller
+
+    # - name: Install VS 2019 tools
+    #   if: matrix.toolset == 'v142'
+    #   shell: pwsh
+    #   run: |
+    #     & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" modify --add Microsoft.VisualStudio.Component.VC.v142.x86.x64 --installPath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise" --quiet --includeRecommended --norestart --noUpdateInstaller
 
     # - name: Add MSBuild to PATH
     #   uses: microsoft/setup-msbuild@v1.1
