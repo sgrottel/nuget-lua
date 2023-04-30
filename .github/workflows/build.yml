@@ -76,7 +76,7 @@ jobs:
       run: |
         choco install vswhere
         choco install microsoft-build-tools --version=12.0.21005.1
-        vswhere -version [12,) -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+        vswhere -version "[12,)" -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
 
     # - name: Install VS 2015 tools
     #   if: matrix.toolset == 'v140'
