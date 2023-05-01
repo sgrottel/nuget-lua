@@ -38,7 +38,7 @@ jobs:
         }
         if ('${{matrix.toolset}}' -Match 'v140') {
           $winTarget = '10.0.19041.0'
-          $vs2022addMod = 'Microsoft.VisualStudio.Component.VC.v140'
+          $vs2022addMod = 'Microsoft.VisualStudio.Component.VC.140'
         }
         if ('${{matrix.toolset}}' -Match 'v141') {
           $winTarget = '10.0.19041.0'
@@ -46,7 +46,7 @@ jobs:
         }
         if ('${{matrix.toolset}}' -Match 'v142') {
           $winTarget = '10.0'
-          $vs2022addMod = 'Microsoft.VisualStudio.Component.VC.v142.x86.x64'
+          $vs2022addMod = 'Microsoft.VisualStudio.Component.VC.14.29.16.11.x86.x64'
         }
         if ('${{matrix.toolset}}' -Match 'v143') {
           $winTarget = '10.0'
@@ -117,40 +117,14 @@ jobs:
     #     Write-Host "Artifact Path: $artifactPath"
     #     Write-Output "ARTIFACT_PATH=$artifactPath" >> $env:GITHUB_ENV
 
-    # - name: Inject build version number
-    #   shell: pwsh
-    #   run: |
-    #     $vf = get-content "Version.h" -Raw
-
-    #     $vf -match '\n#define\s+OPEN_HERE_VER_MAJOR\s+(\d+)\s*\n' | Out-Null
-    #     $major = $Matches[1]
-    #     $vf -match '\n#define\s+OPEN_HERE_VER_MINOR\s+(\d+)\s*\n' | Out-Null
-    #     $minor = $Matches[1]
-    #     $vf -match '\n#define\s+OPEN_HERE_VER_PATCH\s+(\d+)\s*\n' | Out-Null
-    #     $patch = $Matches[1]
-
-    #     $nvf = $vf -replace '(\n#define\s+OPEN_HERE_VER_BUILD\s+)(\d+)(\s*\n)',"`${1}$env:GITHUB_RUN_NUMBER`$3"
-
-    #     set-content "Version.h" $nvf -force -nonewline
-
-    #     $version = New-Object System.Version @( $major, $minor, $patch, $env:GITHUB_RUN_NUMBER )
-    #     Write-Host "Version number: $version"
-
-    #     Write-Output "FULL_VERSION_NUMBER=$version" >> $env:GITHUB_ENV
-
-    # - name: Update Settings App version information
-    #   working-directory: ${{env.GITHUB_WORKSPACE}}
-    #   shell: pwsh
-    #   run: SettingsApp\updateVersionInfo.ps1
-
     # - name: Restore NuGet packages
     #   working-directory: ${{env.GITHUB_WORKSPACE}}
     #   run: nuget restore ${{env.SOLUTION_FILE_PATH}}
 
+    # Add additional options to the MSBuild command line here (like platform or verbosity level).
+    # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      # Add additional options to the MSBuild command line here (like platform or verbosity level).
-      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild /m /p:Configuration=${{matrix.configuration}} /p:Platform=${{matrix.platform}} ${{env.SOLUTION_FILE_PATH}}
 
     # - name: Test ToolboxLib
