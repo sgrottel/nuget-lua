@@ -21,8 +21,8 @@ jobs:
         platform: [x64]
         # configuration: [Debug, Release]
         # platform: [x64, x86]
-        toolset: [v120]
-        # toolset: [v140, v141, v142, v143]
+        # toolset: [v120]
+        toolset: [v141, v143]
         # toolset: [v120, v140, v141, v142, v143]
     runs-on: windows-latest
     steps:
@@ -67,9 +67,6 @@ jobs:
     #   run: choco install microsoft-build-tools --version=15.0.26320.2
     #   if: matrix.toolset == 'v141'
 
-    # - name: Add MSBuild to PATH
-    #   uses: microsoft/setup-msbuild@v1.1
-
     - name: Install VS 2013 tools
       if: matrix.toolset == 'v120'
       shell: pwsh
@@ -86,11 +83,14 @@ jobs:
     #     & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" modify --add Microsoft.VisualStudio.Component.VC.v140 --installPath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise" --quiet --includeRecommended --norestart --noUpdateInstaller
     #     Sleep 30
 
-    # - name: Install VS 2017 tools
-    #   if: matrix.toolset == 'v141'
-    #   shell: pwsh
-    #   run: |
-    #     & "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" modify --add Microsoft.VisualStudio.Component.VC.v141.x86.x64 --installPath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise" --quiet --includeRecommended --norestart --noUpdateInstaller
+    - name: Install VS 2017 tools
+      if: matrix.toolset == 'v141'
+      shell: pwsh
+      run: |
+        Start-Process -FilePath "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" -ArgumentList @("modify"; "--add"; "Microsoft.VisualStudio.Component.VC.v141.x86.x64"; "--installPath"; "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"; "--quiet"; "--includeRecommended"; "--norestart"; "--noUpdateInstaller") -PassThru -Wait -RedirectStandardOutput stdout.txt -RedirectStandardError stderr.txt
+        gci std*.txt
+        gc stdout.txt
+        gc stderr.txt
 
     # - name: Install VS 2019 tools
     #   if: matrix.toolset == 'v142'
@@ -102,6 +102,10 @@ jobs:
     #   uses: microsoft/setup-msbuild@v1.1
     #   with:
     #     vs-version: ${{env.VSVER}}
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+      if: matrix.toolset == 'v140' || matrix.toolset == 'v141' || matrix.toolset == 'v142' || matrix.toolset == 'v143'
 
     - name: Patch VSProj toolset
       shell: pwsh
