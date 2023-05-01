@@ -21,46 +21,46 @@ jobs:
         platform: [x64]
         # configuration: [Debug, Release]
         # platform: [x64, x86]
-        toolset: [v120]
-        # toolset: [v140, v141, v142, v143]
-        # toolset: [v120, v140, v141, v142, v143]
+        toolConfig:
+        - {
+            toolset: v120,
+            winTarget: '10.0',
+            vs2022addMod: ''
+          }
+        # - {
+        #     toolset: v140,
+        #     winTarget: '10.0.19041.0',
+        #     vs2022addMod: 'Microsoft.VisualStudio.Component.VC.140'
+        #   }
+        # - {
+        #     toolset: v141,
+        #     winTarget: '10.0.19041.0',
+        #     vs2022addMod: 'Microsoft.VisualStudio.Component.VC.v141.x86.x64'
+        #   }
+        # - {
+        #     toolset: v142,
+        #     winTarget: '10.0',
+        #     vs2022addMod: 'Microsoft.VisualStudio.Component.VC.14.29.16.11.x86.x64'
+        #   }
+        # - {
+        #     toolset: v143,
+        #     winTarget: '10.0',
+        #     vs2022addMod: ''
+        #   }
     runs-on: windows-2022
     steps:
 
     - uses: actions/checkout@v3
 
-    - name: Prepare Environment
-      shell: pwsh
-      run: |
-        if ('${{matrix.toolset}}' -Match 'v120') {
-          $winTarget = '10.0'
-          $vs2022addMod = ''
-        }
-        if ('${{matrix.toolset}}' -Match 'v140') {
-          $winTarget = '10.0.19041.0'
-          $vs2022addMod = 'Microsoft.VisualStudio.Component.VC.140'
-        }
-        if ('${{matrix.toolset}}' -Match 'v141') {
-          $winTarget = '10.0.19041.0'
-          $vs2022addMod = 'Microsoft.VisualStudio.Component.VC.v141.x86.x64'
-        }
-        if ('${{matrix.toolset}}' -Match 'v142') {
-          $winTarget = '10.0'
-          $vs2022addMod = 'Microsoft.VisualStudio.Component.VC.14.29.16.11.x86.x64'
-        }
-        if ('${{matrix.toolset}}' -Match 'v143') {
-          $winTarget = '10.0'
-          $vs2022addMod = ''
-        }      
-        Write-Output "BUILD_WINTARGET=$winTarget" >> $env:GITHUB_ENV
-        Write-Output "VS2022_ADD_MODULE=$vs2022addMod" >> $env:GITHUB_ENV
-
     - name: Install VS 2013 tools
-      if: matrix.toolset == 'v120'
+      if: matrix.toolConfig.toolset == 'v120'
       shell: pwsh
       run: |
-        choco install microsoft-build-tools-2013
-        gci C:\ msbuild.exe -recurse | foreach { $_.FullName }
+        # choco install visualstudiocommunity2013
+        # choco install visualstudio2013-update
+        choco install visualstudioexpress2013windowsdesktop
+        # gci C:\ msbuild.exe -recurse | foreach { $_.FullName }
+        vswhere
 
       # choco install vswhere
       # choco install microsoft-build-tools --version=12.0.21005.1
@@ -68,10 +68,10 @@ jobs:
       # gci -recurse -path \ -include msbuild.exe
 
     - name: Modify Visual Studio 2022
-      if: env.VS2022_ADD_MODULE != ''
+      if: matrix.toolConfig.vs2022addMod != ''
       shell: pwsh
       run: |
-        $component = "${{env.VS2022_ADD_MODULE}}"
+        $component = "${{matrix.toolConfig.vs2022addMod}}"
         Write-Host "Adding:" $component
         Start-Process -FilePath "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" -ArgumentList "export","--config","info-pre.txt","--installPath","`"C:\Program Files\Microsoft Visual Studio\2022\Enterprise`"","--passive","--noUpdateInstaller" -Wait
         Write-Host "PRE:"
@@ -84,7 +84,7 @@ jobs:
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.1
-      if: matrix.toolset == 'v140' || matrix.toolset == 'v141' || matrix.toolset == 'v142' || matrix.toolset == 'v143'
+      if: matrix.toolConfig.toolset == 'v140' || matrix.toolConfig.toolset == 'v141' || matrix.toolConfig.toolset == 'v142' || matrix.toolConfig.toolset == 'v143'
 
     - name: Patch VSProj toolset
       shell: pwsh
@@ -93,8 +93,8 @@ jobs:
           $proj = [xml](Get-Content $_)
           [System.Xml.XmlNamespaceManager]$ns = $proj.NameTable
           $ns.AddNamespace("Any", $proj.DocumentElement.NamespaceURI)
-          $proj.SelectNodes("//Any:PlatformToolset", $ns) | foreach { $_.InnerText = '${{matrix.toolset}}' }
-          $proj.SelectNodes("//Any:WindowsTargetPlatformVersion", $ns) | foreach { $_.InnerText = '${{env.BUILD_WINTARGET}}' }
+          $proj.SelectNodes("//Any:PlatformToolset", $ns) | foreach { $_.InnerText = '${{matrix.toolConfig.toolset}}' }
+          $proj.SelectNodes("//Any:WindowsTargetPlatformVersion", $ns) | foreach { $_.InnerText = '${{matrix.toolConfig.winTarget}}' }
           $proj.save($_)
         }
 
@@ -146,7 +146,7 @@ jobs:
     #     } ) } | ConvertTo-Json -Depth 10 > "bin/OpenHere/ComponentSource.json"
 
     - name: Upload Artifacts
-      uses: actions/upload-artifact@v3.1.0
+      uses: actions/upload-artifact@v3
       with:
         name: lua-bin
         path: bin
