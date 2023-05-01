@@ -59,8 +59,23 @@ jobs:
         # choco install visualstudiocommunity2013
         # choco install visualstudio2013-update
         choco install visualstudioexpress2013windowsdesktop
-        # gci C:\ msbuild.exe -recurse | foreach { $_.FullName }
+
+        Write-Host
+        Write-Host "c:\VisualStudioExpress2013WindowsDesktop_msi_install.log"
+        gc c:\VisualStudioExpress2013WindowsDesktop_msi_install.log
+
+        Write-Host
+        Write-Host "C:\Users\runneradmin\AppData\Local\Temp\chocolatey\VisualStudioExpress2013Windows.log"
+        gc C:\Users\runneradmin\AppData\Local\Temp\chocolatey\VisualStudioExpress2013Windows.log
+
+        Write-Host
+        Write-Host "C:\ProgramData\chocolatey\logs\chocolatey.log"
+        gc C:\ProgramData\chocolatey\logs\chocolatey.log
+
+        Write-Host
+        Write-Host "VsWhere"
         vswhere
+        # gci C:\ msbuild.exe -recurse | foreach { $_.FullName }
 
       # choco install vswhere
       # choco install microsoft-build-tools --version=12.0.21005.1
