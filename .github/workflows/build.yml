@@ -60,17 +60,17 @@ jobs:
         # choco install visualstudio2013-update
         choco install visualstudioexpress2013windowsdesktop
 
-        Write-Host
-        Write-Host "c:\VisualStudioExpress2013WindowsDesktop_msi_install.log"
-        gc c:\VisualStudioExpress2013WindowsDesktop_msi_install.log
+        # Write-Host
+        # Write-Host "c:\VisualStudioExpress2013WindowsDesktop_msi_install.log"
+        # gc c:\VisualStudioExpress2013WindowsDesktop_msi_install.log -ErrorAction SilentlyContinue
 
         Write-Host
         Write-Host "C:\Users\runneradmin\AppData\Local\Temp\chocolatey\VisualStudioExpress2013Windows.log"
-        gc C:\Users\runneradmin\AppData\Local\Temp\chocolatey\VisualStudioExpress2013Windows.log
+        gc C:\Users\runneradmin\AppData\Local\Temp\chocolatey\VisualStudioExpress2013Windows.log -ErrorAction SilentlyContinue
 
         Write-Host
         Write-Host "C:\ProgramData\chocolatey\logs\chocolatey.log"
-        gc C:\ProgramData\chocolatey\logs\chocolatey.log
+        gc C:\ProgramData\chocolatey\logs\chocolatey.log -ErrorAction SilentlyContinue
 
         Write-Host
         Write-Host "VsWhere"
