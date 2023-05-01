@@ -83,7 +83,7 @@ jobs:
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.1
-      if: matrix.toolset == 'v140' || matrix.toolset == 'v141' || matrix.toolset == 'v142' || matrix.toolset == 'v143'
+      # if: matrix.toolset == 'v140' || matrix.toolset == 'v141' || matrix.toolset == 'v142' || matrix.toolset == 'v143'
 
     - name: Patch VSProj toolset
       shell: pwsh
