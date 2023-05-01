@@ -21,8 +21,8 @@ jobs:
         platform: [x64]
         # configuration: [Debug, Release]
         # platform: [x64, x86]
-        # toolset: [v120]
-        toolset: [v140, v141, v142, v143]
+        toolset: [v120]
+        # toolset: [v140, v141, v142, v143]
         # toolset: [v120, v140, v141, v142, v143]
     runs-on: windows-2022
     steps:
@@ -55,26 +55,16 @@ jobs:
         Write-Output "BUILD_WINTARGET=$winTarget" >> $env:GITHUB_ENV
         Write-Output "VS2022_ADD_MODULE=$vs2022addMod" >> $env:GITHUB_ENV
 
-    # - name: install VS 2013 tools
-    #   run: choco install microsoft-build-tools --version=12.0.21005.20140416
-    #   if: matrix.toolset == 'v120'
-
-    # - name: install VS 2015 tools
-    #   run: 
-    #   if: matrix.toolset == 'v140'
-
-    # - name: install VS 2017 tools
-    #   run: choco install microsoft-build-tools --version=15.0.26320.2
-    #   if: matrix.toolset == 'v141'
-
     - name: Install VS 2013 tools
       if: matrix.toolset == 'v120'
       shell: pwsh
       run: |
-        choco install vswhere
-        choco install microsoft-build-tools --version=12.0.21005.1
-        vswhere -version "[12,)" -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
-        gci -recurse -path \ -include msbuild.exe
+        choco install microsoft-build-tools-2013
+
+      # choco install vswhere
+      # choco install microsoft-build-tools --version=12.0.21005.1
+      # vswhere -version "[12,)" -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+      # gci -recurse -path \ -include msbuild.exe
 
     - name: Modify Visual Studio 2022
       if: env.VS2022_ADD_MODULE != ''
@@ -106,16 +96,6 @@ jobs:
           $proj.SelectNodes("//Any:WindowsTargetPlatformVersion", $ns) | foreach { $_.InnerText = '${{env.BUILD_WINTARGET}}' }
           $proj.save($_)
         }
-
-    # - name: Prepare Environment
-    #   shell: pwsh
-    #   run: |
-    #     $artifactPath = "bin/${{matrix.platform}}/${{matrix.configuration}}"
-    #     if ("${{matrix.platform}}" -eq "x86") {
-    #       $artifactPath = "bin/Win32/${{matrix.configuration}}"
-    #     }
-    #     Write-Host "Artifact Path: $artifactPath"
-    #     Write-Output "ARTIFACT_PATH=$artifactPath" >> $env:GITHUB_ENV
 
     # - name: Restore NuGet packages
     #   working-directory: ${{env.GITHUB_WORKSPACE}}
@@ -164,10 +144,10 @@ jobs:
     #         } )
     #     } ) } | ConvertTo-Json -Depth 10 > "bin/OpenHere/ComponentSource.json"
 
-    # - name: Upload Artifacts
-    #   if: ${{ matrix.configuration == 'Release' && matrix.platform == 'x64' }}
-    #   uses: actions/upload-artifact@v3.1.0
-    #   with:
-    #     name: open-here-${{env.FULL_VERSION_NUMBER}}-${{matrix.platform}}-${{matrix.configuration}}
-    #     path: bin/OpenHere
-    #     if-no-files-found: error
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        name: lua-bin
+        path: bin
+        retention-days: 1
+        if-no-files-found: error

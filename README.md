@@ -40,7 +40,7 @@ Project Website: https://www.lua.org/
 * Everything is built from `lua.sln` with Visual Studio
 * Adjust the project to the different `Toolset` versions. You might also need to adjust the target platform versions to select the correct Windows SDK.
 * Build all projects. Those will populate different subdirectories in `bin` directory.
-* As soon as you got all flavors built, run `makeNuget.ps1`. Specify `0` as build number, to show that the package is not created by CI.
+* As soon as you got all flavors built, run `makeNuget.ps1`.
 
 ## How To: Test
 
