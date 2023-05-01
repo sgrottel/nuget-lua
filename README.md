@@ -18,7 +18,7 @@ For problems with the NuGet package contact SGrottel:
 * https://www.sgrottel.de
 
 
-# Lua
+## Lua
 
 [Lua](https://www.lua.org/) is a powerful, fast, lightweight, embeddable scripting language.
 
@@ -29,24 +29,24 @@ Lua is free open-source software, distributed under a [very liberal license](htt
 
 Project Website: https://www.lua.org/
 
-# How To: Update Lua
+## How To: Update Lua
 
 * Download the newest Lua code and replace the content in the `lua` subdirectory.
 * Update the source file list in the Visual Studio Project based on the updated lua documentation.
 * If files were added or removed, especially public header files, you might need to adjust `lua.nuspec` and `lua.targets`.
 
-# How To: Build
+## How To: Build
 
 * Everything is built from `lua.sln` with Visual Studio
 * Adjust the project to the different `Toolset` versions. You might also need to adjust the target platform versions to select the correct Windows SDK.
 * Build all projects. Those will populate different subdirectories in `bin` directory.
 * As soon as you got all flavors built, run `makeNuget.ps1`. Specify `0` as build number, to show that the package is not created by CI.
 
-# How To: Test
+## How To: Test
 
 TODO
 
-# License
+## License
 Lua is freely available under the terms of the [MIT open source license](https://www.lua.org/license.html).
 
 The additional code to produce the Lua NuGet package is freely available under the terms of the [MIT open source license](./LICENSE).
