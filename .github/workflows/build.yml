@@ -56,9 +56,9 @@ jobs:
       if: matrix.toolConfig.toolset == 'v120'
       shell: pwsh
       run: |
-        # choco install visualstudiocommunity2013
+        choco install visualstudiocommunity2013
         # choco install visualstudio2013-update
-        choco install visualstudioexpress2013windowsdesktop
+        # choco install visualstudioexpress2013windowsdesktop
 
         # Write-Host
         # Write-Host "c:\VisualStudioExpress2013WindowsDesktop_msi_install.log"
