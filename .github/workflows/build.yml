@@ -60,6 +60,7 @@ jobs:
       shell: pwsh
       run: |
         choco install microsoft-build-tools-2013
+        gci C:\ msbuild.exe -recurse | foreach { $_.FullName }
 
       # choco install vswhere
       # choco install microsoft-build-tools --version=12.0.21005.1
@@ -83,7 +84,7 @@ jobs:
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.1
-      # if: matrix.toolset == 'v140' || matrix.toolset == 'v141' || matrix.toolset == 'v142' || matrix.toolset == 'v143'
+      if: matrix.toolset == 'v140' || matrix.toolset == 'v141' || matrix.toolset == 'v142' || matrix.toolset == 'v143'
 
     - name: Patch VSProj toolset
       shell: pwsh
