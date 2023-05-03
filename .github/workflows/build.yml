@@ -3,7 +3,7 @@ name: MSBuild
 
 on:
   push:
-    # branches: [ "main" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
@@ -19,29 +19,29 @@ jobs:
             winTarget: '10.0',
             vs2022addMod: ''
           }
-        # - {
-        #     toolset: v140,
-        #     winTarget: '10.0.19041.0',
-        #     vs2022addMod: 'Microsoft.VisualStudio.Component.VC.140'
-        #   }
-        # - {
-        #     toolset: v141,
-        #     winTarget: '10.0.19041.0',
-        #     # Already available on runner
-        #     # vs2022addMod: 'Microsoft.VisualStudio.Component.VC.v141.x86.x64'
-        #   }
-        # - {
-        #     toolset: v142,
-        #     winTarget: '10.0',
-        #     # Already available on runner
-        #     # vs2022addMod: 'Microsoft.VisualStudio.Component.VC.14.29.16.11.x86.x64'
-        #   }
-        # - {
-        #     toolset: v143,
-        #     winTarget: '10.0',
-        #     # Already available on runner
-        #     # vs2022addMod: ''
-        #   }
+        - {
+            toolset: v140,
+            winTarget: '10.0.19041.0',
+            vs2022addMod: 'Microsoft.VisualStudio.Component.VC.140'
+          }
+        - {
+            toolset: v141,
+            winTarget: '10.0.19041.0',
+            # Already available on runner
+            # vs2022addMod: 'Microsoft.VisualStudio.Component.VC.v141.x86.x64'
+          }
+        - {
+            toolset: v142,
+            winTarget: '10.0',
+            # Already available on runner
+            # vs2022addMod: 'Microsoft.VisualStudio.Component.VC.14.29.16.11.x86.x64'
+          }
+        - {
+            toolset: v143,
+            winTarget: '10.0',
+            # Already available on runner
+            # vs2022addMod: ''
+          }
     runs-on: windows-2022
     steps:
 
@@ -52,21 +52,24 @@ jobs:
       shell: pwsh
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
+        Write-Host "Downloading VS 2013 Express for Windows Desktop (w Update 5) DVD ISO..."
         Invoke-WebRequest -Uri "${{ secrets.VS2013ISO_URL }}" -OutFile dvd.iso
-        $dvdiso = (Resolve-Path .\dvd.iso).Path
-        $DiskImage = Mount-DiskImage -ImagePath $dvdiso -StorageType ISO -PassThru
-        
         gci dvd.iso
+        $dvdiso = (Resolve-Path .\dvd.iso).Path
+
+        Write-Host "Mounting Disk..."
+        $DiskImage = Mount-DiskImage -ImagePath $dvdiso -StorageType ISO -PassThru
 
         $volumeInfo = (Get-Volume -DiskImage $DiskImage)
         $volumeInfo
 
         cd ($volumeInfo.DriveLetter + ":\")
-
         gci
 
+        Write-Host "Installing Visual Studio 2013 Express..."
         Start-Process -FilePath ($volumeInfo.DriveLetter + ":\wdexpress_full.exe") -ArgumentList "/Q","/NoRestart","/NoRefresh","/NoWeb","/Full" -Wait
 
+        Write-Host "Unmounting Disk..."
         Dismount-DiskImage -DevicePath $DiskImage.DevicePath
 
 
@@ -117,10 +120,25 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: msbuild /m /p:Configuration=Debug /p:Platform=x86 .
 
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v3
       with:
         name: lua-bin
         path: bin
         retention-days: 1
         if-no-files-found: error
+
+  package:
+    needs: build
+    runs-on: windows-2022
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: lua-bin
+
+    - name: Show me what you got
+      shell: pwsh
+      run: |
+        gci -recurse
