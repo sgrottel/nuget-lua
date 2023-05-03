@@ -8,14 +8,10 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 
-env:
-  # Path to the solution file relative to the root of the project.
-  SOLUTION_FILE_PATH: .
-
 jobs:
   build:
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         toolConfig:
         - {
@@ -60,7 +56,16 @@ jobs:
         $dvdiso = (Resolve-Path .\dvd.iso).Path
         $DiskImage = Mount-DiskImage -ImagePath $dvdiso -StorageType ISO -PassThru
         
-        Get-Volume -DiskImage $DiskImage
+        Write-Host (gci dvd.iso)
+
+        $volumeInfo = (Get-Volume -DiskImage $DiskImage)
+        Write-Host $volumeInfo
+
+        cd ($volumeInfo.DriveLetter + ":\")
+
+        Write-Host (gci)
+
+        .\wdexpress_full.exe /Q /NoRestart /Log C:\temp\vs2013.log /NoRefresh /NoWeb /Full
 
         Dismount-DiskImage -DevicePath $DiskImage.DevicePath
 
@@ -81,6 +86,7 @@ jobs:
         Write-Host "Added:"
         Write-Host (gc info-post.txt | Select-String $component)
 
+
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.1
 
@@ -96,61 +102,20 @@ jobs:
           $proj.save($_)
         }
 
-    # - name: Restore NuGet packages
-    #   working-directory: ${{env.GITHUB_WORKSPACE}}
-    #   run: nuget restore ${{env.SOLUTION_FILE_PATH}}
-
     # Add additional options to the MSBuild command line here (like platform or verbosity level).
     # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
     - name: Build x64 Release
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=Release /p:Platform=x64 ${{env.SOLUTION_FILE_PATH}}
+      run: msbuild /m /p:Configuration=Release /p:Platform=x64 .
     - name: Build x64 Debug
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=Debug /p:Platform=x64 ${{env.SOLUTION_FILE_PATH}}
+      run: msbuild /m /p:Configuration=Debug /p:Platform=x64 .
     - name: Build x86 Release
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=Release /p:Platform=x86 ${{env.SOLUTION_FILE_PATH}}
+      run: msbuild /m /p:Configuration=Release /p:Platform=x86 .
     - name: Build x86 Debug
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=Debug /p:Platform=x86 ${{env.SOLUTION_FILE_PATH}}
-
-    # - name: Test ToolboxLib
-    #   working-directory: ${{env.GITHUB_WORKSPACE}}
-    #   run: vstest.console.exe ToolboxLibUnitTest/${{env.ARTIFACT_PATH}}/ToolboxLibUnitTest.dll
-
-    # - name: Test Console App
-    #   shell: pwsh
-    #   run: ConsoleApp\runtest.ps1 "${{env.ARTIFACT_PATH}}" "${{github.workspace}}"
-
-    # - name: Finalize Release Package
-    #   shell: pwsh
-    #   run: |
-    #     mkdir bin/OpenHere
-    #     mkdir bin/OpenHere/OpenHereSettings
-    #     copy "${{env.ARTIFACT_PATH}}/*" "bin/OpenHere/OpenHereSettings" -Exclude "*.pdb"
-    #     move bin/OpenHere/OpenHereSettings/OpenHere.exe bin/OpenHere
-    #     move bin/OpenHere/OpenHereSettings/OpenHereCon.exe bin/OpenHere
-    #     copy LICENSE bin/OpenHere
-    #     $lines = [System.Collections.ArrayList](get-content README.md)
-    #     $lines.Insert(2, "Version ${{env.FULL_VERSION_NUMBER}}");
-    #     $newLines = @()
-    #     $inc = $true
-    #     $lines | foreach { if ($_ -match "\s*<!---\s+START\s+STRIP\s+-->\s*") { $inc = $false; } elseif ($_ -match "\s*<!---\s+END\s+STRIP\s+-->\s*") { $inc = $true } elseif ($inc) { $newLines += $_ } }
-    #     set-content bin\OpenHere\README.md $newLines
-    #     @{
-    #     "_type" = "ComponentSourceManifest";
-    #     "_version" = 1;
-    #     "components" = @( @{
-    #         "name" = "Open Here";
-    #         "source" = @( @{
-    #             "type" = "git";
-    #             "url" = "https://github.com/sgrottel/open-here.git";
-    #             "hash" = "${{github.sha}}";
-    #             "version" = "${{env.FULL_VERSION_NUMBER}}";
-    #             "subset" = "github releases"
-    #         } )
-    #     } ) } | ConvertTo-Json -Depth 10 > "bin/OpenHere/ComponentSource.json"
+      run: msbuild /m /p:Configuration=Debug /p:Platform=x86 .
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
