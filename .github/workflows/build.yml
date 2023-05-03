@@ -17,36 +17,35 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        configuration: [Debug]
-        platform: [x64]
-        # configuration: [Debug, Release]
-        # platform: [x64, x86]
         toolConfig:
-        - {
-            toolset: v120,
-            winTarget: '10.0',
-            vs2022addMod: ''
-          }
         # - {
-        #     toolset: v140,
-        #     winTarget: '10.0.19041.0',
-        #     vs2022addMod: 'Microsoft.VisualStudio.Component.VC.140'
-        #   }
-        # - {
-        #     toolset: v141,
-        #     winTarget: '10.0.19041.0',
-        #     vs2022addMod: 'Microsoft.VisualStudio.Component.VC.v141.x86.x64'
-        #   }
-        # - {
-        #     toolset: v142,
-        #     winTarget: '10.0',
-        #     vs2022addMod: 'Microsoft.VisualStudio.Component.VC.14.29.16.11.x86.x64'
-        #   }
-        # - {
-        #     toolset: v143,
+        #     toolset: v120,
         #     winTarget: '10.0',
         #     vs2022addMod: ''
         #   }
+        - {
+            toolset: v140,
+            winTarget: '10.0.19041.0',
+            vs2022addMod: 'Microsoft.VisualStudio.Component.VC.140'
+          }
+        - {
+            toolset: v141,
+            winTarget: '10.0.19041.0',
+            # Already available on runner
+            # vs2022addMod: 'Microsoft.VisualStudio.Component.VC.v141.x86.x64'
+          }
+        - {
+            toolset: v142,
+            winTarget: '10.0',
+            # Already available on runner
+            # vs2022addMod: 'Microsoft.VisualStudio.Component.VC.14.29.16.11.x86.x64'
+          }
+        - {
+            toolset: v143,
+            winTarget: '10.0',
+            # Already available on runner
+            # vs2022addMod: ''
+          }
     runs-on: windows-2022
     steps:
 
@@ -119,9 +118,11 @@ jobs:
 
     # Add additional options to the MSBuild command line here (like platform or verbosity level).
     # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-    - name: Build
+        # configuration: [Debug, Release]
+        # platform: [x64, x86]
+    - name: Build x64 Release
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: msbuild /m /p:Configuration=${{matrix.configuration}} /p:Platform=${{matrix.platform}} ${{env.SOLUTION_FILE_PATH}}
+      run: msbuild /m /p:Configuration=Release /p:Platform=x64 ${{env.SOLUTION_FILE_PATH}}
 
     # - name: Test ToolboxLib
     #   working-directory: ${{env.GITHUB_WORKSPACE}}
