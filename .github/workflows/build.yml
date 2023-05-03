@@ -56,16 +56,16 @@ jobs:
         $dvdiso = (Resolve-Path .\dvd.iso).Path
         $DiskImage = Mount-DiskImage -ImagePath $dvdiso -StorageType ISO -PassThru
         
-        Write-Host (gci dvd.iso)
+        gci dvd.iso
 
         $volumeInfo = (Get-Volume -DiskImage $DiskImage)
-        Write-Host $volumeInfo
+        $volumeInfo
 
         cd ($volumeInfo.DriveLetter + ":\")
 
-        Write-Host (gci)
+        gci
 
-        .\wdexpress_full.exe /Q /NoRestart /Log C:\temp\vs2013.log /NoRefresh /NoWeb /Full
+        Start-Process -FilePath ($volumeInfo.DriveLetter + ":\wdexpress_full.exe") -ArgumentList "/Q","/NoRestart","/NoRefresh","/NoWeb","/Full" -Wait
 
         Dismount-DiskImage -DevicePath $DiskImage.DevicePath
 
