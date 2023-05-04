@@ -17,3 +17,5 @@
 /lib/x64
 *.user
 /versioninfo.h
+/testbuild/Win32
+/testbuild/x64
