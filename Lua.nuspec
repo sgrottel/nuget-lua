@@ -20,6 +20,7 @@ Lua is dynamically typed, runs by interpreting bytecode for a register-based vir
 		</description>
 		<summary>Lua is a powerful, fast, lightweight, embeddable scripting language.</summary>
 		<releaseNotes>
+		    - Bugfix release v5.4.5
 			- Added MSCV v143 target framework
 			- Updated to Lua code 5.4.4
 			...
