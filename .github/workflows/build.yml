@@ -1,0 +1,144 @@
+# Nuget Lua
+name: MSBuild
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: true
+      matrix:
+        toolConfig:
+        - {
+            toolset: v120,
+            winTarget: '10.0',
+            vs2022addMod: ''
+          }
+        - {
+            toolset: v140,
+            winTarget: '10.0.19041.0',
+            vs2022addMod: 'Microsoft.VisualStudio.Component.VC.140'
+          }
+        - {
+            toolset: v141,
+            winTarget: '10.0.19041.0',
+            # Already available on runner
+            # vs2022addMod: 'Microsoft.VisualStudio.Component.VC.v141.x86.x64'
+          }
+        - {
+            toolset: v142,
+            winTarget: '10.0',
+            # Already available on runner
+            # vs2022addMod: 'Microsoft.VisualStudio.Component.VC.14.29.16.11.x86.x64'
+          }
+        - {
+            toolset: v143,
+            winTarget: '10.0',
+            # Already available on runner
+            # vs2022addMod: ''
+          }
+    runs-on: windows-2022
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: Install VS 2013 tools
+      if: matrix.toolConfig.toolset == 'v120'
+      shell: pwsh
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: |
+        Write-Host "Downloading VS 2013 Express for Windows Desktop (w Update 5) DVD ISO..."
+        Invoke-WebRequest -Uri "${{ secrets.VS2013ISO_URL }}" -OutFile dvd.iso
+        gci dvd.iso
+        $dvdiso = (Resolve-Path .\dvd.iso).Path
+
+        Write-Host "Mounting Disk..."
+        $DiskImage = Mount-DiskImage -ImagePath $dvdiso -StorageType ISO -PassThru
+
+        $volumeInfo = (Get-Volume -DiskImage $DiskImage)
+        $volumeInfo
+
+        cd ($volumeInfo.DriveLetter + ":\")
+        gci
+
+        Write-Host "Installing Visual Studio 2013 Express..."
+        Start-Process -FilePath ($volumeInfo.DriveLetter + ":\wdexpress_full.exe") -ArgumentList "/Q","/NoRestart","/NoRefresh","/NoWeb","/Full" -Wait
+
+        Write-Host "Unmounting Disk..."
+        Dismount-DiskImage -DevicePath $DiskImage.DevicePath
+
+
+    - name: Modify Visual Studio 2022
+      if: matrix.toolConfig.vs2022addMod != ''
+      shell: pwsh
+      run: |
+        $component = "${{matrix.toolConfig.vs2022addMod}}"
+        Write-Host "Adding:" $component
+
+        Start-Process -FilePath "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" -ArgumentList "modify","--add",$component,"--installPath","`"C:\Program Files\Microsoft Visual Studio\2022\Enterprise`"","--passive","--includeRecommended","--norestart","--noUpdateInstaller" -Wait
+
+        Start-Process -FilePath "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" -ArgumentList "export","--config","info-post.txt","--installPath","`"C:\Program Files\Microsoft Visual Studio\2022\Enterprise`"","--passive","--noUpdateInstaller" -Wait
+        Write-Host "VS2022 Components after modification:"
+        Write-Host (gc info-post.txt)
+
+        Write-Host "Added:"
+        Write-Host (gc info-post.txt | Select-String $component)
+
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Patch VSProj toolset
+      shell: pwsh
+      run: |
+        gci -r '*.vcxproj' | foreach {
+          $proj = [xml](Get-Content $_)
+          [System.Xml.XmlNamespaceManager]$ns = $proj.NameTable
+          $ns.AddNamespace("Any", $proj.DocumentElement.NamespaceURI)
+          $proj.SelectNodes("//Any:PlatformToolset", $ns) | foreach { $_.InnerText = '${{matrix.toolConfig.toolset}}' }
+          $proj.SelectNodes("//Any:WindowsTargetPlatformVersion", $ns) | foreach { $_.InnerText = '${{matrix.toolConfig.winTarget}}' }
+          $proj.save($_)
+        }
+
+    # Add additional options to the MSBuild command line here (like platform or verbosity level).
+    # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+    - name: Build x64 Release
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild /m /p:Configuration=Release /p:Platform=x64 .
+    - name: Build x64 Debug
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild /m /p:Configuration=Debug /p:Platform=x64 .
+    - name: Build x86 Release
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild /m /p:Configuration=Release /p:Platform=x86 .
+    - name: Build x86 Debug
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: msbuild /m /p:Configuration=Debug /p:Platform=x86 .
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: lua-bin
+        path: bin
+        retention-days: 1
+        if-no-files-found: error
+
+  package:
+    needs: build
+    runs-on: windows-2022
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: lua-bin
+
+    - name: Show me what you got
+      shell: pwsh
+      run: |
+        gci -recurse

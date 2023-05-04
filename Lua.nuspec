@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+
+	<!-- package metadata -->
+	<metadata>
+		<id>lua</id>
+		<version>$version$</version>
+		<title>Lua</title>
+		<authors>R. Ierusalimschy, L. H. de Figueiredo, W. Celes</authors>
+		<owners>Sebastian Grottel</owners>
+		<license type="expression">MIT</license>
+		<projectUrl>https://go.grottel.net/nuget-project/lua</projectUrl>
+		<icon>images\logo.png</icon>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>
+Lua combines simple procedural syntax with powerful data description constructs based on associative arrays and extensible semantics.
+
+Lua is dynamically typed, runs by interpreting bytecode for a register-based virtual machine, and has automatic memory management with incremental garbage collection, making it ideal for configuration, scripting, and rapid prototyping.
+		</description>
+		<summary>Lua is a powerful, fast, lightweight, embeddable scripting language.</summary>
+		<releaseNotes>
+			- Added MSCV v143 target framework
+			- Updated to Lua code 5.4.4
+			...
+		</releaseNotes>
+		<copyright>Copyright 1994-$year$</copyright>
+		<tags>Lua native nativepackage</tags>
+	</metadata>
+
+	<!-- content -->
+	<files>
+		<!-- documentation -->
+		<file src="lua\doc\**" target="build\native\doc" />
+		<file src="bin\logo.png" target="images\logo.png" />
+
+		<!-- includes -->
+		<file src="lua\src\lua.h" target="build\native\include" />
+		<file src="lua\src\luaconf.h" target="build\native\include" />
+		<file src="lua\src\lualib.h" target="build\native\include" />
+		<file src="lua\src\lauxlib.h" target="build\native\include" />
+		<file src="lua\src\lua.hpp" target="build\native\include" />
+
+		<!-- libs -->
+		<file src="bin\**\*.lib" target="build\native\lib" />
+
+		<!-- symbols -->
+		<!-- <file src="bin\**\*.pdb" target="build\native\bin" /> -->
+		<file src="bin\**\*_lib.pdb" target="build\native\lib" />
+
+		<!-- dlls -->
+		<file src="bin\**\*.dll" target="build\native\bin" />
+
+		<!-- tools -->
+		<!-- only include the latest build, and only release -->
+		<file src="bin\**\$latestRuntime$\release\*.exe" target="build\native\bin" />
+
+		<!-- VS files -->
+		<file src="bin\Lua.targets" target="build\native" />
+		<file src="bin\Lua-propertiesui.xml" target="build\native" />
+
+	</files>
+</package>

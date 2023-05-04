@@ -1,0 +1,23 @@
+version: 1.0.{build}
+image:
+- Visual Studio 2022
+- Visual Studio 2019
+- Visual Studio 2017
+- Visual Studio 2015
+- Visual Studio 2013
+configuration:
+- Release
+- Debug
+platform:
+- x64
+- x86
+before_build:
+- ps: .\prepbuild.ps1
+build:
+  verbosity: minimal
+artifacts:
+- path: bin\**\*.exe
+- path: bin\**\*.lib
+- path: bin\**\*.dll
+- path: bin\**\*.pdb
+deploy: off

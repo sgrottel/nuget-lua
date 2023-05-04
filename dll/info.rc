@@ -1,0 +1,43 @@
+//
+// info.rc
+// by SGrottel (http://www.sgrottel.de)
+//
+
+#include "../versioninfo.h"
+#include "WinVer.h"
+
+// version info
+1 VERSIONINFO
+    FILEVERSION    VER_VERSION
+    PRODUCTVERSION VER_VERSION
+    FILEFLAGSMASK  VS_FFI_FILEFLAGSMASK
+#ifdef _DEBUG
+    FILEFLAGS      VS_FF_DEBUG
+#else
+    FILEFLAGS      0x0L
+#endif
+    FILEOS         VOS__WINDOWS32
+    FILETYPE       VFT_DLL
+    FILESUBTYPE    VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "000004b0"
+        BEGIN
+            VALUE "Comments", ""
+            VALUE "CompanyName", LUA_AUTHORS
+            VALUE "FileDescription", "Lua"
+            VALUE "FileVersion", VER_VERSION_STR
+            VALUE "InternalName", "Lua.dll"
+            VALUE "LegalCopyright", LUA_COPYRIGHT
+            VALUE "OriginalFilename", "Lua.dll"
+            VALUE "ProductName", "Lua"
+            VALUE "ProductVersion", VER_VERSION_STR
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0, 1200
+    END
+END
+
