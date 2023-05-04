@@ -184,7 +184,7 @@ jobs:
       shell: pwsh
       working-directory: ./testnuget
       run: |
-        $tests = (gci -recurse -path ..\bin -include TestNuget.exe)
+        $tests = (gci -recurse -path . -include TestNuget.exe)
         if ($tests.Length -ne 4)
         {
           Write-Error "TestNuget.exe not found"
