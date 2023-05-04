@@ -11,6 +11,7 @@
 		<license type="expression">MIT</license>
 		<projectUrl>https://go.grottel.net/nuget-project/lua</projectUrl>
 		<icon>images\logo.png</icon>
+		<readme>README.md</readme>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>
 Lua combines simple procedural syntax with powerful data description constructs based on associative arrays and extensible semantics.
