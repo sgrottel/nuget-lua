@@ -29,12 +29,11 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ConsoleApplication12.cpp">
+    <ClCompile Include="TestBuild.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="helloscript.lua" />
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>
