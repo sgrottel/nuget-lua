@@ -19,3 +19,8 @@
 /versioninfo.h
 /testbuild/Win32
 /testbuild/x64
+/testnuget/packages
+/testnuget/Debug
+/testnuget/Release
+/testnuget/x64
+testnuget/.vs

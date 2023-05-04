@@ -154,17 +154,43 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.1
 
-    - name: Build NuGet
+    - name: Build NuGet Package
       shell: pwsh
       run: |
         $packageVersion = 2
         .\makeNuget.ps1 $packageVersion
 
-    - name: Build TestPackage
-      run: cd .
+    - name: Prepare TestNuget
+      working-directory: ./testnuget
+      shell: pwsh
+      run: |
+        .\prepareProject.ps1
+        nuget restore
 
-    - name: Run TestPackage
-      run: cd .
+    - name: Build TestNuget x64 Release
+      working-directory: ./testnuget
+      run: msbuild /m /p:Configuration=Release /p:Platform=x64 .
+    - name: Build TestNuget x64 Debug
+      working-directory: ./testnuget
+      run: msbuild /m /p:Configuration=Debug /p:Platform=x64 .
+    - name: Build TestNuget x86 Release
+      working-directory: ./testnuget
+      run: msbuild /m /p:Configuration=Release /p:Platform=x86 .
+    - name: Build TestNuget x86 Debug
+      working-directory: ./testnuget
+      run: msbuild /m /p:Configuration=Debug /p:Platform=x86 .
+
+    - name: Run TestNuget
+      shell: pwsh
+      working-directory: ./testnuget
+      run: |
+        $tests = (gci -recurse -path . -include TestNuget.exe)
+        if ($tests.Length -ne 4)
+        {
+          Write-Error "TestNuget.exe not found"
+          exit 1
+        }
+        $tests | foreach { & $_ }
 
     - uses: actions/upload-artifact@v3
       with:
