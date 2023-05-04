@@ -157,7 +157,7 @@ jobs:
     - name: Build NuGet Package
       shell: pwsh
       run: |
-        $packageVersion = 2
+        $packageVersion = 0
         .\makeNuget.ps1 $packageVersion
 
     - name: Prepare TestNuget
@@ -197,4 +197,5 @@ jobs:
         name: lua-nuget
         path: lua.*.nupkg
         if-no-files-found: error
+        retention-days: 7
     
