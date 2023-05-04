@@ -151,7 +151,24 @@ jobs:
         name: lua-bin
         path: bin
 
-    - name: Show me what you got
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Build NuGet
       shell: pwsh
       run: |
-        gci -recurse
+        $packageVersion = 2
+        .\makeNuget.ps1 $packageVersion
+
+    - name: Build TestPackage
+      run: cd .
+
+    - name: Run TestPackage
+      run: cd .
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: lua-nuget
+        path: lua.*.nupkg
+        if-no-files-found: error
+    

@@ -32,6 +32,8 @@ Lua is dynamically typed, runs by interpreting bytecode for a register-based vir
 		<!-- documentation -->
 		<file src="lua\doc\**" target="build\native\doc" />
 		<file src="bin\logo.png" target="images\logo.png" />
+		<file src="LICENSE" target="LICENSE" />
+		<file src="nugetreadme.md" target="README.md" />
 
 		<!-- includes -->
 		<file src="lua\src\lua.h" target="build\native\include" />
@@ -41,18 +43,21 @@ Lua is dynamically typed, runs by interpreting bytecode for a register-based vir
 		<file src="lua\src\lua.hpp" target="build\native\include" />
 
 		<!-- libs -->
-		<file src="bin\**\*.lib" target="build\native\lib" />
+		<file src="bin\**\lua.lib" target="build\native\lib" />
+		<file src="bin\**\lua_static.lib" target="build\native\lib" />
 
 		<!-- symbols -->
 		<!-- <file src="bin\**\*.pdb" target="build\native\bin" /> -->
-		<file src="bin\**\*_lib.pdb" target="build\native\lib" />
+		<file src="bin\**\lua_lib.pdb" target="build\native\lib" />
+		<file src="bin\**\lua_static.pdb" target="build\native\lib" />
 
 		<!-- dlls -->
-		<file src="bin\**\*.dll" target="build\native\bin" />
+		<file src="bin\**\lua.dll" target="build\native\bin" />
 
 		<!-- tools -->
 		<!-- only include the latest build, and only release -->
-		<file src="bin\**\$latestRuntime$\release\*.exe" target="build\native\bin" />
+		<file src="bin\**\$latestRuntime$\release\lua.exe" target="build\native\bin" />
+		<file src="bin\**\$latestRuntime$\release\luac.exe" target="build\native\bin" />
 
 		<!-- VS files -->
 		<file src="bin\Lua.targets" target="build\native" />

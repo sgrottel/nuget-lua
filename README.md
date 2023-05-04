@@ -44,7 +44,9 @@ Project Website: https://www.lua.org/
 
 ## How To: Test
 
-TODO
+* Testing is automatically done on CI with `testbuild` during the build steps, before packing the NuGet
+* A second test is running with `testnuget` after backing the NuGet
+* Use `testnuget` and adjust the project if you want to test a NuGet package manually
 
 ## License
 Lua is freely available under the terms of the [MIT open source license](https://www.lua.org/license.html).
