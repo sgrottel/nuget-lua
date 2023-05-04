@@ -114,28 +114,28 @@ int main(void) {
 	lua_setfield(L, -2, "call"); // sets table["call"] = ccallback, and pops functions from stack
 	lua_setglobal(L, "chost"); // sets global chost = table, and pops table from stack
 
-	//lua_register(L, "andBackToC", &ccallback);  /* Register a c callback*/
+	lua_register(L, "andBackToC", &ccallback);  /* Register a c callback*/
 
-	//printf("In C, calling Lua\n");
+	printf("In C, calling Lua\n");
 
 	if (lua_pcall(L, 0, 0, 0))                  /* Run the loaded Lua script */
 		bail(L, "lua_pcall() failed");          /* Error out if Lua file has an error */
 
-	//lua_getglobal(L, "tellme");
-	//if (lua_pcall(L, 0, 0, 0))
-	//	bail(L, "lua_pcall(tellme) failed");          /* Error out if Lua file has an error */
+	lua_getglobal(L, "tellme");
+	if (lua_pcall(L, 0, 0, 0))
+		bail(L, "lua_pcall(tellme) failed");          /* Error out if Lua file has an error */
 
-	//lua_getglobal(L, "tellthat");
-	//lua_pushliteral(L, "first");
-	//if (lua_pcall(L, 1, 0, 0))
-	//	bail(L, "lua_pcall(tellthat) failed");          /* Error out if Lua file has an error */
+	lua_getglobal(L, "tellthat");
+	lua_pushliteral(L, "first");
+	if (lua_pcall(L, 1, 0, 0))
+		bail(L, "lua_pcall(tellthat) failed");          /* Error out if Lua file has an error */
 
-	//lua_getglobal(L, "tellthat");
-	//lua_pushliteral(L, "second");
-	//if (lua_pcall(L, 1, 0, 0))
-	//	bail(L, "lua_pcall(tellthat) failed");          /* Error out if Lua file has an error */
+	lua_getglobal(L, "tellthat");
+	lua_pushliteral(L, "second");
+	if (lua_pcall(L, 1, 0, 0))
+		bail(L, "lua_pcall(tellthat) failed");          /* Error out if Lua file has an error */
 
-	//printf("Back in C again\n");
+	printf("Back in C again\n");
 
 	lua_close(L);                               /* Clean up, free the Lua state var */
 

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsoleApplication12", "ConsoleApplication12.vcxproj", "{C204137B-6F38-40D2-9AC9-7A01B0345C7B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestNuget", "TestNuget.vcxproj", "{C204137B-6F38-40D2-9AC9-7A01B0345C7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
