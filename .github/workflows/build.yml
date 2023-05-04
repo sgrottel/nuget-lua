@@ -122,9 +122,9 @@ jobs:
 
     - name: Run TestBuild
       shell: pwsh
-      working-directory: ${{env.GITHUB_WORKSPACE}}
+      working-directory: "${{env.GITHUB_WORKSPACE}}/testbuild"
       run: |
-        $tests = (gci -recurse TestBuild.exe)
+        $tests = (gci -recurse -path ..\bin -include TestBuild.exe)
         if ($tests.Length -ne 4)
         {
           Write-Error "TestBuild.exe not found"
@@ -149,6 +149,7 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: lua-bin
+        path: bin
 
     - name: Show me what you got
       shell: pwsh
