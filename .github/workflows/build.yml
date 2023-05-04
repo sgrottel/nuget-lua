@@ -122,7 +122,7 @@ jobs:
 
     - name: Run TestBuild
       shell: pwsh
-      working-directory: "${{env.GITHUB_WORKSPACE}}/testbuild"
+      working-directory: ./testbuild
       run: |
         $tests = (gci -recurse -path ..\bin -include TestBuild.exe)
         if ($tests.Length -ne 4)
