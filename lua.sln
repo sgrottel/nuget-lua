@@ -14,8 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Lua.targets = Lua.targets
 		makeNuget.ps1 = makeNuget.ps1
 		numericVersionNumber.ps1 = numericVersionNumber.ps1
-		prepbuild.ps1 = prepbuild.ps1
 		README.md = README.md
+		retargetVCProj.ps1 = retargetVCProj.ps1
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "interpreter", "interpreter\interpreter.vcxproj", "{49F2A6F0-5EA7-42E3-9B92-237877055976}"
@@ -29,6 +29,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "compiler", "compiler\compil
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lib", "lib\lib.vcxproj", "{243F0555-FD67-4CE1-B9E4-D546F3FE9269}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestBuild", "testbuild\TestBuild.vcxproj", "{C204137B-6F38-40D2-9AC9-7A01B0345C7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +72,14 @@ Global
 		{243F0555-FD67-4CE1-B9E4-D546F3FE9269}.Release|x64.Build.0 = Release|x64
 		{243F0555-FD67-4CE1-B9E4-D546F3FE9269}.Release|x86.ActiveCfg = Release|Win32
 		{243F0555-FD67-4CE1-B9E4-D546F3FE9269}.Release|x86.Build.0 = Release|Win32
+		{C204137B-6F38-40D2-9AC9-7A01B0345C7B}.Debug|x64.ActiveCfg = Debug|x64
+		{C204137B-6F38-40D2-9AC9-7A01B0345C7B}.Debug|x64.Build.0 = Debug|x64
+		{C204137B-6F38-40D2-9AC9-7A01B0345C7B}.Debug|x86.ActiveCfg = Debug|Win32
+		{C204137B-6F38-40D2-9AC9-7A01B0345C7B}.Debug|x86.Build.0 = Debug|Win32
+		{C204137B-6F38-40D2-9AC9-7A01B0345C7B}.Release|x64.ActiveCfg = Release|x64
+		{C204137B-6F38-40D2-9AC9-7A01B0345C7B}.Release|x64.Build.0 = Release|x64
+		{C204137B-6F38-40D2-9AC9-7A01B0345C7B}.Release|x86.ActiveCfg = Release|Win32
+		{C204137B-6F38-40D2-9AC9-7A01B0345C7B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
