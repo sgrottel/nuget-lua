@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         toolConfig:
         - {
@@ -27,8 +27,7 @@ jobs:
         - {
             toolset: v141,
             winTarget: '10.0.19041.0',
-            # Already available on runner
-            # vs2022addMod: 'Microsoft.VisualStudio.Component.VC.v141.x86.x64'
+            vs2022addMod: 'Microsoft.VisualStudio.Component.VC.v141.x86.x64'
           }
         - {
             toolset: v142,
