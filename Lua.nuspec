@@ -19,13 +19,6 @@ Lua combines simple procedural syntax with powerful data description constructs 
 Lua is dynamically typed, runs by interpreting bytecode for a register-based virtual machine, and has automatic memory management with incremental garbage collection, making it ideal for configuration, scripting, and rapid prototyping.
 		</description>
 		<summary>Lua is a powerful, fast, lightweight, embeddable scripting language.</summary>
-		<releaseNotes>
-			- Release v5.4.6 fixed broken ABI in v5.4.5
-		    - Bugfix release v5.4.5
-			- Added MSCV v143 target framework
-			- Updated to Lua code 5.4.4
-			...
-		</releaseNotes>
 		<copyright>Copyright 1994-$year$</copyright>
 		<tags>Lua native nativepackage</tags>
 	</metadata>
