@@ -41,6 +41,12 @@ jobs:
             # Already available on runner
             # vs2022addMod: ''
           }
+        - {
+            toolset: ClangCL,
+            winTarget: '10.0',
+            # Already available on runner
+            # vs2022addMod: ''
+          }
     runs-on: windows-2022
     steps:
 
@@ -165,6 +171,10 @@ jobs:
       with:
         name: lua-bin-v143
         path: bin
+    - uses: actions/download-artifact@v4
+      with:
+        name: lua-bin-ClangCL
+        path: bin
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v2
@@ -172,7 +182,7 @@ jobs:
     - name: Build NuGet Package
       shell: pwsh
       run: |
-        $packageVersion = 0
+        $packageVersion = 1
         .\makeNuget.ps1 $packageVersion
 
     - name: Prepare TestNuget
@@ -213,4 +223,4 @@ jobs:
         path: lua.*.nupkg
         if-no-files-found: error
         retention-days: 7
-    
+
