@@ -28,7 +28,7 @@ $year = (get-date).Year
 
 # identify latest runtime
 $latestRuntime = $false
-$runtimes = gci "$PSScriptRoot/bin/x64/v*" | Select-Object -ExpandProperty 'Name' | Sort-Object -Descending -Unique
+$runtimes = Get-ChildItem "$PSScriptRoot/bin/x64/*" | Select-Object -ExpandProperty 'Name' | Sort-Object -Descending -Unique
 $latestRuntime = $runtimes[0]
 
 # file convert the logo image
