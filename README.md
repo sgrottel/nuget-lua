@@ -29,11 +29,13 @@ Lua is free open-source software, distributed under a [very liberal license](htt
 
 Project Website: https://www.lua.org/
 
+
 ## How To: Update Lua
 
 * Download the newest Lua code and replace the content in the `lua` subdirectory.
 * Update the source file list in the Visual Studio Project based on the updated lua documentation.
 * If files were added or removed, especially public header files, you might need to adjust `lua.nuspec` and `lua.targets`.
+
 
 ## How To: Build
 
@@ -42,13 +44,16 @@ Project Website: https://www.lua.org/
 * Build all projects. Those will populate different subdirectories in `bin` directory.
 * As soon as you got all flavors built, run `makeNuget.ps1`.
 
+
 ## How To: Test
 
 * Testing is automatically done on CI with `testbuild` during the build steps, before packing the NuGet
 * A second test is running with `testnuget` after backing the NuGet
 * Use `testnuget` and adjust the project if you want to test a NuGet package manually
 
+
 ## License
+
 Lua is freely available under the terms of the [MIT open source license](https://www.lua.org/license.html).
 
 The additional code to produce the Lua NuGet package is freely available under the terms of the [MIT open source license](./LICENSE).
