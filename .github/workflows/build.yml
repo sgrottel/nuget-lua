@@ -50,7 +50,7 @@ jobs:
     runs-on: windows-2022
     steps:
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - name: Install VS 2013 tools
       if: matrix.toolConfig.toolset == 'v120'
@@ -149,7 +149,7 @@ jobs:
     runs-on: windows-2022
     steps:
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
 
     - uses: actions/download-artifact@v4
       with:
