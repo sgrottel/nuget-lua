@@ -137,7 +137,7 @@ jobs:
         }
         $tests | foreach { & $_ }
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v5
       with:
         name: lua-bin-${{matrix.toolConfig.toolset}}
         path: bin
@@ -217,7 +217,7 @@ jobs:
         }
         $tests | foreach { & $_ }
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v5
       with:
         name: lua-nuget
         path: lua.*.nupkg
