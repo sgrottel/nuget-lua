@@ -16,12 +16,12 @@ jobs:
         toolConfig:
         - {
             toolset: v140,
-            winTarget: '10.0.19041.0',
+            winTarget: '10.0.26100.0',
             vs2022addMod: 'Microsoft.VisualStudio.Component.VC.140'
           }
         - {
             toolset: v141,
-            winTarget: '10.0.19041.0',
+            winTarget: '10.0.26100.0',
             vs2022addMod: 'Microsoft.VisualStudio.Component.VC.v141.x86.x64'
           }
         - {
@@ -42,7 +42,7 @@ jobs:
             # Already available on runner
             # vs2022addMod: ''
           }
-    runs-on: windows-2022
+    runs-on: windows-2025
     steps:
 
     - uses: actions/checkout@v6
@@ -116,7 +116,7 @@ jobs:
 
   package:
     needs: build
-    runs-on: windows-2022
+    runs-on: windows-2025
     steps:
 
     - uses: actions/checkout@v6
