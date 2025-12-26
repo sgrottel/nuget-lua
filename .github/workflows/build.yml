@@ -15,18 +15,13 @@ jobs:
       matrix:
         toolConfig:
         - {
-            toolset: v120,
-            winTarget: '10.0',
-            vs2022addMod: ''
-          }
-        - {
             toolset: v140,
-            winTarget: '10.0.19041.0',
+            winTarget: '10.0.26100.0',
             vs2022addMod: 'Microsoft.VisualStudio.Component.VC.140'
           }
         - {
             toolset: v141,
-            winTarget: '10.0.19041.0',
+            winTarget: '10.0.26100.0',
             vs2022addMod: 'Microsoft.VisualStudio.Component.VC.v141.x86.x64'
           }
         - {
@@ -47,35 +42,10 @@ jobs:
             # Already available on runner
             # vs2022addMod: ''
           }
-    runs-on: windows-2022
+    runs-on: windows-2025
     steps:
 
     - uses: actions/checkout@v6
-
-    - name: Install VS 2013 tools
-      if: matrix.toolConfig.toolset == 'v120'
-      shell: pwsh
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: |
-        Write-Host "Downloading VS 2013 Express for Windows Desktop (w Update 5) DVD ISO..."
-        Invoke-WebRequest -Uri "${{ secrets.VS2013ISO_URL }}" -OutFile dvd.iso
-        gci dvd.iso
-        $dvdiso = (Resolve-Path .\dvd.iso).Path
-
-        Write-Host "Mounting Disk..."
-        $DiskImage = Mount-DiskImage -ImagePath $dvdiso -StorageType ISO -PassThru
-
-        $volumeInfo = (Get-Volume -DiskImage $DiskImage)
-        $volumeInfo
-
-        cd ($volumeInfo.DriveLetter + ":\")
-        gci
-
-        Write-Host "Installing Visual Studio 2013 Express..."
-        Start-Process -FilePath ($volumeInfo.DriveLetter + ":\wdexpress_full.exe") -ArgumentList "/Q","/NoRestart","/NoRefresh","/NoWeb","/Full" -Wait
-
-        Write-Host "Unmounting Disk..."
-        Dismount-DiskImage -DevicePath $DiskImage.DevicePath
 
 
     - name: Modify Visual Studio 2022
@@ -146,15 +116,11 @@ jobs:
 
   package:
     needs: build
-    runs-on: windows-2022
+    runs-on: windows-2025
     steps:
 
     - uses: actions/checkout@v6
 
-    - uses: actions/download-artifact@v6
-      with:
-        name: lua-bin-v120
-        path: bin
     - uses: actions/download-artifact@v6
       with:
         name: lua-bin-v140
@@ -182,7 +148,7 @@ jobs:
     - name: Build NuGet Package
       shell: pwsh
       run: |
-        $packageVersion = 0
+        $packageVersion = 1
         .\makeNuget.ps1 $packageVersion
 
     - name: Prepare TestNuget
