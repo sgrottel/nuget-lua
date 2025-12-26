@@ -121,23 +121,23 @@ jobs:
 
     - uses: actions/checkout@v6
 
-    - uses: actions/download-artifact@v6
+    - uses: actions/download-artifact@v7
       with:
         name: lua-bin-v140
         path: bin
-    - uses: actions/download-artifact@v6
+    - uses: actions/download-artifact@v7
       with:
         name: lua-bin-v141
         path: bin
-    - uses: actions/download-artifact@v6
+    - uses: actions/download-artifact@v7
       with:
         name: lua-bin-v142
         path: bin
-    - uses: actions/download-artifact@v6
+    - uses: actions/download-artifact@v7
       with:
         name: lua-bin-v143
         path: bin
-    - uses: actions/download-artifact@v6
+    - uses: actions/download-artifact@v7
       with:
         name: lua-bin-ClangCL
         path: bin
