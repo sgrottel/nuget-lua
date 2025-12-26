@@ -148,7 +148,7 @@ jobs:
     - name: Build NuGet Package
       shell: pwsh
       run: |
-        $packageVersion = 0
+        $packageVersion = 1
         .\makeNuget.ps1 $packageVersion
 
     - name: Prepare TestNuget
