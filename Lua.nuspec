@@ -20,8 +20,10 @@ Lua is dynamically typed, runs by interpreting bytecode for a register-based vir
 		</description>
 		<summary>Lua is a powerful, fast, lightweight, embeddable scripting language.</summary>
 		<releaseNotes>
-		This is a bug-fix release.
-		See the diffs: https://www.lua.org/work/diffs-lua-5.4.7-lua-5.4.8.html
+			Here are the main changes introduced in Lua 5.5.
+			Its main new features are declarations for global variables, named vararg tables, more compact arrays, and major garbage collections done incrementally.
+			See: https://www.lua.org/manual/5.5/readme.html#changes
+			The reference manual lists the incompatibilities that had to be introduced: https://www.lua.org/manual/5.5/manual.html#8
 		</releaseNotes>
 		<copyright>Copyright 1994-$year$</copyright>
 		<tags>Lua native nativepackage</tags>

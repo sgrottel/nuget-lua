@@ -13,11 +13,11 @@ cd $PSScriptRoot
 
 # parse version information
 $header = gc "$PSScriptRoot/lua/src/lua.h" | Out-String
-if (($header -match '(?m)^#define\s+LUA_VERSION_MAJOR\s+"(\d+)"\s*$') -ne $true) { throw "Failed to parse LUA_VERSION_MAJOR" }
+if (($header -match '(?m)^#define\s+LUA_VERSION_MAJOR_N\s+(\d+)\s*$') -ne $true) { throw "Failed to parse LUA_VERSION_MAJOR_N" }
 $verMajor = $Matches[1]
-if (($header -match '(?m)^#define\s+LUA_VERSION_MINOR\s+"(\d+)"\s*$') -ne $true) { throw "Failed to parse LUA_VERSION_MINOR" }
+if (($header -match '(?m)^#define\s+LUA_VERSION_MINOR_N\s+(\d+)\s*$') -ne $true) { throw "Failed to parse LUA_VERSION_MINOR_N" }
 $verMinor = $Matches[1]
-if (($header -match '(?m)^#define\s+LUA_VERSION_RELEASE\s+"(\d+)"\s*$') -ne $true) { throw "Failed to parse LUA_VERSION_RELEASE" }
+if (($header -match '(?m)^#define\s+LUA_VERSION_RELEASE_N\s+(\d+)\s*$') -ne $true) { throw "Failed to parse LUA_VERSION_RELEASE_N" }
 $verPatch = $Matches[1]
 $verBuild = $buildVersion
 
@@ -32,9 +32,10 @@ $runtimes = Get-ChildItem "$PSScriptRoot/bin/x64/*" | Select-Object -ExpandPrope
 $latestRuntime = $runtimes[0]
 
 # file convert the logo image
-$image = [System.Drawing.Image]::FromFile("$PSScriptRoot/lua/doc/logo.gif")
-$image.Save("$PSScriptRoot/bin/logo.png", [System.Drawing.Imaging.ImageFormat]::Png)
-$image.Dispose()
+#$image = [System.Drawing.Image]::FromFile("$PSScriptRoot/lua/doc/logo.gif")
+#$image.Save("$PSScriptRoot/bin/logo.png", [System.Drawing.Imaging.ImageFormat]::Png)
+#$image.Dispose()
+Copy-Item -Path "$PSScriptRoot/lua/doc/logo.png" -Destination "$PSScriptRoot/bin/logo.png" -Force
 
 # inject runtimes into build scripts
 [xml]$propsUi = gc "$PSScriptRoot/Lua-propertiesui.xml"

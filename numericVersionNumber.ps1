@@ -3,11 +3,11 @@ Write-Host "Generating 'versioninfo.h'"
 Write-Host "Reading Header..."
 $header = get-content "$PSScriptRoot/lua/src/lua.h" | Out-String
 
-if (($header -match '(?m)^#define\s+LUA_VERSION_MAJOR\s+"(\d+)"\s*$') -ne $true) { throw "Failed to parse LUA_VERSION_MAJOR" }
+if (($header -match '(?m)^#define\s+LUA_VERSION_MAJOR_N\s+(\d+)\s*$') -ne $true) { throw "Failed to parse LUA_VERSION_MAJOR_N" }
 $verMajor = $Matches[1]
-if (($header -match '(?m)^#define\s+LUA_VERSION_MINOR\s+"(\d+)"\s*$') -ne $true) { throw "Failed to parse LUA_VERSION_MINOR" }
+if (($header -match '(?m)^#define\s+LUA_VERSION_MINOR_N\s+(\d+)\s*$') -ne $true) { throw "Failed to parse LUA_VERSION_MINOR_N" }
 $verMinor = $Matches[1]
-if (($header -match '(?m)^#define\s+LUA_VERSION_RELEASE\s+"(\d+)"\s*$') -ne $true) { throw "Failed to parse LUA_VERSION_RELEASE" }
+if (($header -match '(?m)^#define\s+LUA_VERSION_RELEASE_N\s+(\d+)\s*$') -ne $true) { throw "Failed to parse LUA_VERSION_RELEASE_N" }
 $verPatch = $Matches[1]
 
 Write-Host "Parsed version: $verMajor.$verMinor.$verPatch"
