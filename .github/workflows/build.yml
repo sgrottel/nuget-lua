@@ -15,11 +15,6 @@ jobs:
       matrix:
         toolConfig:
         - {
-            toolset: v140,
-            winTarget: '10.0.26100.0',
-            vs2022addMod: 'Microsoft.VisualStudio.Component.VC.140'
-          }
-        - {
             toolset: v141,
             winTarget: '10.0.26100.0',
             vs2022addMod: 'Microsoft.VisualStudio.Component.VC.v141.x86.x64'
@@ -37,6 +32,12 @@ jobs:
             # vs2022addMod: ''
           }
         - {
+            toolset: v145,
+            winTarget: '10.0',
+            # Already available on runner
+            # vs2022addMod: ''
+          }
+        - {
             toolset: ClangCL,
             winTarget: '10.0',
             # Already available on runner
@@ -46,7 +47,6 @@ jobs:
     steps:
 
     - uses: actions/checkout@v7
-
 
     - name: Modify Visual Studio 2022
       if: matrix.toolConfig.vs2022addMod != ''
@@ -63,7 +63,6 @@ jobs:
 
         Write-Host "Added:"
         Write-Host (gc info-post.txt | Select-String $component)
-
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v3
@@ -123,10 +122,6 @@ jobs:
 
     - uses: actions/download-artifact@v8
       with:
-        name: lua-bin-v140
-        path: bin
-    - uses: actions/download-artifact@v8
-      with:
         name: lua-bin-v141
         path: bin
     - uses: actions/download-artifact@v8
@@ -136,6 +131,10 @@ jobs:
     - uses: actions/download-artifact@v8
       with:
         name: lua-bin-v143
+        path: bin
+    - uses: actions/download-artifact@v8
+      with:
+        name: lua-bin-v145
         path: bin
     - uses: actions/download-artifact@v8
       with:
