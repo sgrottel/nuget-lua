@@ -15,55 +15,132 @@ jobs:
       matrix:
         toolConfig:
         - {
-            toolset: v140,
-            winTarget: '10.0.26100.0',
-            vs2022addMod: 'Microsoft.VisualStudio.Component.VC.140'
-          }
-        - {
+            runner: windows-2022,
             toolset: v141,
             winTarget: '10.0.26100.0',
             vs2022addMod: 'Microsoft.VisualStudio.Component.VC.v141.x86.x64'
           }
         - {
+            runner: windows-2025,
             toolset: v142,
             winTarget: '10.0',
             # Already available on runner
             # vs2022addMod: 'Microsoft.VisualStudio.Component.VC.14.29.16.11.x86.x64'
           }
         - {
+            runner: windows-2025,
             toolset: v143,
             winTarget: '10.0',
             # Already available on runner
             # vs2022addMod: ''
           }
         - {
+            runner: windows-2025,
+            toolset: v145,
+            winTarget: '10.0',
+            # Already available on runner
+            # vs2022addMod: ''
+          }
+        - {
+            runner: windows-2025,
             toolset: ClangCL,
             winTarget: '10.0',
             # Already available on runner
             # vs2022addMod: ''
           }
-    runs-on: windows-2025
+    runs-on: ${{matrix.toolConfig.runner}}
     steps:
 
     - uses: actions/checkout@v7
-
 
     - name: Modify Visual Studio 2022
       if: matrix.toolConfig.vs2022addMod != ''
       shell: pwsh
       run: |
+        $ErrorActionPreference = "Stop"
         $component = "${{matrix.toolConfig.vs2022addMod}}"
-        Write-Host "Adding:" $component
+        $installer = "C:\Program Files (x86)\Microsoft Visual Studio\Installer\setup.exe"
+        $installPath = "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
+        $configPath = Join-Path $env:RUNNER_TEMP "vs2022-post.vsconfig"
+        $logPath = Join-Path $env:RUNNER_TEMP "vs-installer-logs"
+        $startedAt = Get-Date
+        New-Item -ItemType Directory -Path $logPath -Force | Out-Null
+        Write-Host "Runner image: $env:ImageOS $env:ImageVersion"
+        Write-Host "Visual Studio installation: $installPath"
+        if (-not (Test-Path $installer)) {
+          throw "Visual Studio Installer not found at $installer"
+        }
+        if (-not (Test-Path $installPath)) {
+          throw "Visual Studio 2022 not found at $installPath"
+        }
 
-        Start-Process -FilePath "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" -ArgumentList "modify","--add",$component,"--installPath","`"C:\Program Files\Microsoft Visual Studio\2022\Enterprise`"","--passive","--includeRecommended","--norestart","--noUpdateInstaller" -Wait
+        function Invoke-VSInstaller {
+          param([string[]] $Arguments)
 
-        Start-Process -FilePath "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe" -ArgumentList "export","--config","info-post.txt","--installPath","`"C:\Program Files\Microsoft Visual Studio\2022\Enterprise`"","--passive","--noUpdateInstaller" -Wait
-        Write-Host "VS2022 Components after modification:"
-        Write-Host (gc info-post.txt)
+          Write-Host "$installer $($Arguments -join ' ')"
+          $process = Start-Process -FilePath $installer -ArgumentList $Arguments -PassThru -Wait
+          Write-Host "Visual Studio Installer exit code: $($process.ExitCode)"
+          if ($process.ExitCode -notin 0, 3010) {
+            throw "Visual Studio Installer failed with exit code $($process.ExitCode)"
+          }
+        }
 
-        Write-Host "Added:"
-        Write-Host (gc info-post.txt | Select-String $component)
+        try {
+          Write-Host "Adding: $component"
+          Invoke-VSInstaller @(
+            "modify",
+            "--add", $component,
+            "--installPath", "`"$installPath`"",
+            "--passive",
+            "--includeRecommended",
+            "--norestart",
+            "--noUpdateInstaller"
+          )
 
+          Invoke-VSInstaller @(
+            "export",
+            "--config", "`"$configPath`"",
+            "--installPath", "`"$installPath`"",
+            "--passive",
+            "--noUpdateInstaller"
+          )
+
+          Write-Host "VS2022 Components after modification:"
+          Get-Content $configPath
+
+          Write-Host "Added:"
+          $installedComponent = Get-Content $configPath | Select-String $component -SimpleMatch
+          if (-not $installedComponent) {
+            throw "Component $component was not present in the exported Visual Studio configuration"
+          }
+          $installedComponent
+        }
+        finally {
+          $tempPaths = @($env:TEMP, "$env:SystemRoot\Temp") |
+            Select-Object -Unique |
+            Where-Object { Test-Path $_ }
+          $logs = Get-ChildItem $tempPaths -File -Filter "dd_*" |
+            Where-Object LastWriteTime -ge $startedAt |
+            Sort-Object LastWriteTime
+          foreach ($log in $logs) {
+            Copy-Item $log.FullName $logPath
+            Write-Host "::group::$($log.Name)"
+            Get-Content $log.FullName -Tail 200
+            Write-Host "::endgroup::"
+          }
+          if (-not $logs) {
+            Write-Warning "No Visual Studio Installer logs were created in $($tempPaths -join ', ')"
+          }
+        }
+
+    - name: Upload Visual Studio Installer logs
+      if: always() && matrix.toolConfig.vs2022addMod != ''
+      uses: actions/upload-artifact@v7
+      with:
+        name: vs-installer-logs-${{matrix.toolConfig.toolset}}
+        path: ${{runner.temp}}\vs-installer-logs
+        if-no-files-found: warn
+        retention-days: 7
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v3
@@ -123,10 +200,6 @@ jobs:
 
     - uses: actions/download-artifact@v8
       with:
-        name: lua-bin-v140
-        path: bin
-    - uses: actions/download-artifact@v8
-      with:
         name: lua-bin-v141
         path: bin
     - uses: actions/download-artifact@v8
@@ -136,6 +209,10 @@ jobs:
     - uses: actions/download-artifact@v8
       with:
         name: lua-bin-v143
+        path: bin
+    - uses: actions/download-artifact@v8
+      with:
+        name: lua-bin-v145
         path: bin
     - uses: actions/download-artifact@v8
       with:
@@ -189,4 +266,3 @@ jobs:
         path: lua.*.nupkg
         if-no-files-found: error
         retention-days: 7
-
