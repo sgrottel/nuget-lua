@@ -32,9 +32,10 @@ $runtimes = Get-ChildItem "$PSScriptRoot/bin/x64/*" | Select-Object -ExpandPrope
 $latestRuntime = $runtimes[0]
 
 # file convert the logo image
-$image = [System.Drawing.Image]::FromFile("$PSScriptRoot/lua/doc/logo.gif")
-$image.Save("$PSScriptRoot/bin/logo.png", [System.Drawing.Imaging.ImageFormat]::Png)
-$image.Dispose()
+#$image = [System.Drawing.Image]::FromFile("$PSScriptRoot/lua/doc/logo.gif")
+#$image.Save("$PSScriptRoot/bin/logo.png", [System.Drawing.Imaging.ImageFormat]::Png)
+#$image.Dispose()
+Copy-Item -Path "$PSScriptRoot/lua/doc/logo.png" -Destination "$PSScriptRoot/bin/logo.png" -Force
 
 # inject runtimes into build scripts
 [xml]$propsUi = gc "$PSScriptRoot/Lua-propertiesui.xml"
